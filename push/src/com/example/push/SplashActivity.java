@@ -1,5 +1,11 @@
 package com.example.push;
 
+<<<<<<< HEAD
+=======
+import java.security.PublicKey;
+import java.util.Date;
+
+>>>>>>> cc06111baf0182d378861e4ae713a77b674b6d99
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,7 +22,11 @@ public class SplashActivity extends Activity {
 	}
 
 	protected void initialize() {
+<<<<<<< HEAD
 		Handler handler = new Handler(){
+=======
+		Handler handler = new Handler() {
+>>>>>>> cc06111baf0182d378861e4ae713a77b674b6d99
 
 			@Override
 			public void handleMessage(Message msg) {

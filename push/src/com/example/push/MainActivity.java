@@ -90,5 +90,18 @@ public class MainActivity extends Activity {
 		});
 		
 	
+<<<<<<< HEAD
 	}
+=======
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+    	
+    	startActivity(new Intent(this,SplashActivity.class));
+    	
+    	super.onCreate(savedInstanceState);
+        setContentView(R.layout.layout_main);
+        
+       
+    }
+>>>>>>> cc06111baf0182d378861e4ae713a77b674b6d99
 }

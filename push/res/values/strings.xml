@@ -5,6 +5,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_init">InitActivity</string>
+<<<<<<< HEAD
     <string name="title_activity_professor">Professor</string>
+=======
+>>>>>>> cc06111baf0182d378861e4ae713a77b674b6d99
 
 </resources>
