@@ -28,10 +28,12 @@
             android:textSize="18sp"
             android:layout_marginRight="10dp"/>
         
-        <EditText 
+        <EditText
+            android:id="@+id/login_id"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:hint="ID를 입력해주세요"/>        
+            android:hint="ID를 입력해주세요" />
+        
     </LinearLayout>
     
     
@@ -51,13 +53,16 @@
             android:textSize="18sp"
             android:layout_marginRight="10dp"/>
         
-        <EditText 
+        <EditText
+            android:id="@+id/login_pwd"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:hint="Pass word를 입력해주세요"/>
+            android:hint="Pass word를 입력해주세요" />
+
     </LinearLayout>
 
     <Button
+        android:id="@+id/login_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="로그인" />
