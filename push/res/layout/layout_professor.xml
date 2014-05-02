@@ -12,6 +12,14 @@
         android:text="공지사항"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+    
+        
+>>>>>>> cc06111baf0182d378861e4ae713a77b674b6d99
+>>>>>>> f8c30556d9db22aeba99c6a138b8dc0f217de46e
               <LinearLayout  
             android:layout_width="fill_parent"  
             android:layout_height="fill_parent"  

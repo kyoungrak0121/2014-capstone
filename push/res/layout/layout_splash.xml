@@ -3,7 +3,11 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< HEAD
     tools:context="com.example.push.activity.SplashActivity"
+=======
+    tools:context="com.example.push.SplashActivity"
+>>>>>>> f8c30556d9db22aeba99c6a138b8dc0f217de46e
     tools:ignore="MergeRootFrame" >
 
     <RelativeLayout
