@@ -1,0 +1,44 @@
+package com.example.push.GCM;
+
+import com.example.push.R;
+import com.example.push.R.id;
+import com.example.push.R.layout;
+import com.example.push.R.menu;
+import com.google.android.gcm.GCMRegistrar;
+
+import android.app.Activity;
+import android.app.ActionBar;
+import android.app.Fragment;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.os.Build;
+
+public class GCMInit extends Activity {
+
+	private static final String TAG = "GCM";
+	//자신의 Project ID 를 넣어주세요
+	private static final String SENDER_ID = "41362468480";	
+	private String regid ;
+	
+	public void GCMinit(){
+		setGCM();
+	}
+	
+	private void setGCM(){
+		Log.w(TAG, "Start Registered : ");
+	    //GCM 등록여부
+        String regId = GCMRegistrar.getRegistrationId(this); // 받아옴 
+      	//등록된 ID가 없으면 ID값을 얻어옵니다
+      	if (regId.equals("") || regId == null) {
+      		GCMRegistrar.register(this, SENDER_ID);
+      		regId = GCMRegistrar.getRegistrationId(this);
+      	}else{
+      		Log.w(TAG, "Already Registered : " + regId);
+      	}
+	}
+}

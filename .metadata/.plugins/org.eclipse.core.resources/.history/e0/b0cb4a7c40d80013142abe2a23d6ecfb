@@ -1,0 +1,51 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black">
+    <!-- sdfasdfsadf -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:text="비밀번호는 1111 입니다"/>
+	<LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp">
+            <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="비밀번호"
+	            android:textColor="#ffffff"
+	            android:textSize="15sp"
+	            android:textStyle="bold"/>
+            <EditText
+	                android:id="@+id/managerPassword"
+	                android:textSize="15sp"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+					android:singleLine="true"
+					android:password="true"
+					android:numeric="integer"
+	                android:gravity="center"/>
+        </LinearLayout>
+        <Button
+            android:id="@+id/managerButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="확인"
+            android:textSize="15sp"/>
+    </LinearLayout>
+
+</RelativeLayout>

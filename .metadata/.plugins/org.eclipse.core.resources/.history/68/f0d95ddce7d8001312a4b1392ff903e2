@@ -1,0 +1,24 @@
+package com.example.push.table;
+
+
+public class Globals {
+	private static Globals globals;
+	private Person person = null;
+
+	private String 
+	
+	public static synchronized Globals getInstance() {
+		if (globals == null) {
+			globals = new Globals();
+		}
+		return globals;
+	}
+	public Person getPerson(){
+			return person;
+	}
+	public void setPerson(Person person){
+		this.person = person;
+	}
+	
+
+}

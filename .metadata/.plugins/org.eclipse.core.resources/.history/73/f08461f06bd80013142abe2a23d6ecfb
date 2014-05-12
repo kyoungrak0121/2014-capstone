@@ -1,0 +1,233 @@
+package com.example.pushtest;
+
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gcm.server.Message;
+import com.google.android.gcm.server.Result;
+import com.google.android.gcm.server.Sender;
+
+public class GCMSendMessage extends Activity {
+	private static final String TAG = "GCM";
+	
+	private Sender 			    gcmSender = null;				//GCM Sender
+	private Message 			gcmMessage = null;			//GCM Message
+	private Result 				gcmResult = null;				//GCM Result(단일 전송)
+//	private MulticastResult 	gcmMultiResult;		//GCM Multi Result(일괄 전송)
+	
+	//일괄전송에 필요한 List 변수
+	private List<String> registrationIds = new ArrayList<String>();
+	//단일전송에 필요한 변수
+	private String  registrationId ;
+	//DB에서 RegID를 가져오기 위해 만들어진 서버 페이지 주소 
+	//private static final String SELECT_PAGE = "http://자신의 서버 아이피/select_registration.php";
+	//파싱하기 위해 데이터를 담을 변수
+	//private static String JSON = null;
+	//개발자 콘솔에서 발급받은 API Key
+	private static String 		API_KEY = "AIzaSyCSBJSnRHC29dyA_xPlFmLwbVDerLkAd74";
+	//메세지의 고유 ID(?)정도로 생각하면 됩니다. 메세지의 중복수신을 막기 위해 랜덤값을 지정합니다
+	private static String 		COLLAPSE_KEY = String.valueOf(Math.random() % 100 + 1);
+	//기기가 활성화 상태일 때 보여줄 것인지. 
+	private static boolean 	DELAY_WHILE_IDLE = true;
+	//기기가 비활성화 상태일 때 GCM Storage에 보관되는 시간
+	private static int			TIME_TO_LIVE = 3;
+	//메세지 전송 실패시 재시도할 횟수
+	private static int 			RETRY = 3;
+	
+	private EditText pushTicker;
+	private EditText pushTitle;
+	private EditText pushMessage;
+	private TextView pushLength;
+	
+	private Button pushShow;
+	private Button pushTrans;
+	/** Called when the activity is first created. */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+	    super.onCreate(savedInstanceState);
+	    setContentView(R.layout.send_message);
+	    
+	    setLayout();
+	    
+	    Bundle b = new Bundle();
+	    b = getIntent().getExtras();
+	    registrationId = b.getString("regId");
+	    Log.w(TAG, "" + registrationId);
+	    
+//	    단일전송시에는 주석처리
+//	    getJson(SELECT_PAGE);
+//	    단일전송시에는 주석처리
+//	    getToken();					
+	}
+	
+	public void setMessage(){
+		gcmSender = new Sender(API_KEY);
+		
+		gcmMessage = new Message.Builder()
+	   //.collapseKey(COLLAPSE_KEY)
+	   //.delayWhileIdle(DELAY_WHILE_IDLE)
+	   //.timeToLive(TIME_TO_LIVE)
+	   // .addData("ticker", pushTicker.getText().toString())
+	   // .addData("title", pushTitle.getText().toString())
+	   // .addData("msg", pushMessage.getText().toString())
+	    .addData("msg", "hi")
+	    .build();
+		
+	}
+	public void sendMessage(){
+		//일괄전송시에 사용
+//		try {
+//			gcmMultiResult = gcmSender.send(gcmMessage, registrationIds, RETRY);
+//		} catch (IOException e) {
+//			Log.w(TAG, "IOException " + e.getMessage());
+//		}
+//		Log.w(TAG, "getCanonicalIds : " + gcmMultiResult.getCanonicalIds() + "\n" + 
+//				"getSuccess : " + gcmMultiResult.getSuccess() + "\n" + 
+//				"getTotal : " + gcmMultiResult.getTotal() + "\n" + 
+//				"getMulticastId : " + gcmMultiResult.getMulticastId());
+		
+		//단일전송시에 사용
+		try {
+			Log.w(TAG, "" + gcmMessage);
+			Log.w(TAG, "" + registrationId);
+			Log.w(TAG, "" + RETRY);
+			
+			
+			if(gcmSender == null){
+				Log.w(TAG, "Sender Null");
+			}
+			Message m = new Message();
+			gcmSender.send(arg0, arg1, arg2);
+		  
+			gcmResult = gcmSender.send(gcmMessage,registrationId, RETRY);
+		 	
+		}catch(IOException e) {
+			Log.w(TAG, "IOException " + e.getMessage());
+		}catch(Exception e){
+			Log.w(TAG, "Exception " + e.getMessage());
+		}
+	
+	}
+	
+	public void setLayout(){
+		pushTicker = (EditText)findViewById(R.id.pushTicker);
+		pushTitle = (EditText)findViewById(R.id.pushTitle);
+	    pushMessage = (EditText)findViewById(R.id.pushMessage);
+	    pushLength = (TextView)findViewById(R.id.pushLength);
+	    
+	    pushShow = (Button)findViewById(R.id.pushShow);
+	    pushTrans = (Button)findViewById(R.id.pushTrans);
+	}
+	
+	@Override
+	public void onBackPressed() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				finish();				
+			}
+		});
+		builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+		builder.setTitle("알림");
+		builder.setMessage("종료????");
+		Dialog dialog = builder.create();
+		dialog.show();
+	}
+	
+	public void onClickButton(View v){
+		switch(v.getId()){
+		case R.id.pushShow:
+			if(registrationIds == null){
+				pushLength.setText("데이터 받아오기 실패");
+			}else{
+				pushLength.setText("푸쉬 가능 사용자는 " + registrationIds.size() + "명이다.");
+			}
+			break;
+		case R.id.pushTrans:
+			if(pushTicker.length() == 0 || pushTitle.length() == 0 || pushMessage.length() == 0){
+				Toast.makeText(this, "입력메시지를 전부 입력하세요", Toast.LENGTH_LONG).show();
+			}else{
+				Log.w(TAG, "1");
+				setMessage();
+				Log.w(TAG, "2");
+				sendMessage();		
+				Log.w(TAG, "3");
+			}
+			break;
+		}
+	}
+	
+	/*
+	
+	public void getJson(String addr){
+    	StringBuilder jsonHtml = new StringBuilder();
+    	try{
+    		//연결 url 설정
+    		URL url = new URL(addr);
+    		//컨넥션 객체 생성
+    		HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+    		conn.setDefaultUseCaches(false);                                           
+            conn.setDoInput(true);                         // 서버에서 읽기 모드 지정
+            conn.setDoOutput(true);                       // 서버로 쓰기 모드 지정 
+            conn.setRequestMethod("POST");         // 전송 방식은 POST
+            
+    		//연결되었다
+    		if(conn != null){
+    			conn.setConnectTimeout(10000);
+    			conn.setUseCaches(false);
+    			//연결확인 코드가 리턴되었을 때
+    			if(conn.getResponseCode() == HttpURLConnection.HTTP_OK){
+    				BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+    				for(;;){
+    					String line = br.readLine();
+    					if(line == null) break;
+    					jsonHtml.append(line);
+    				}
+    				br.close();
+    			}
+    			conn.disconnect();
+    		}
+    	}catch(Exception e){
+    		Log.w(TAG, e.getMessage());
+    	}
+    	JSON =  jsonHtml.toString();
+    }
+	
+	public void getToken(){
+		try{
+			JSONArray ja = new JSONArray(JSON);
+			//서버에서 가져온 모든 ID값을 불러옵니다
+			//GCM에서 사용되는 Data형태로 만들기 위해 파싱하여 List에 넣어줍니다
+		    for(int i = 0; i < ja.length(); i++){
+		        JSONObject jo = ja.getJSONObject(i);
+		        String regId = jo.getString("ID");
+		        registrationIds.add(0, regId);
+		    }
+		}catch(JSONException e){
+			Log.w(TAG, "JSONException : " + e.getMessage());
+		}
+		Toast.makeText(this, "받아오기 완료", Toast.LENGTH_SHORT).show();
+	}
+	*/
+	
+}

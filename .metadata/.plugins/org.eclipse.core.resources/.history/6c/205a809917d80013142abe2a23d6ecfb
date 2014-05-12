@@ -1,0 +1,22 @@
+package com.example.push.activity;
+
+import com.example.push.R;
+
+import android.os.Bundle;
+
+public class StudentActivity extends PreferenceActivity {
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		
+		if (isCheck_login()) {
+			
+		}
+		
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.layout_student);
+		setSlideHolder();
+		
+	}
+
+}

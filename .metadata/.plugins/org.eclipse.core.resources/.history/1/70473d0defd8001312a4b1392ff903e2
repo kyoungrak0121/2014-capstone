@@ -1,0 +1,318 @@
+package com.example.push;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import com.example.push.R;
+import com.example.push.table.Person;
+import com.example.push.table.Professor;
+import com.example.push.table.Student;
+import com.example.push.widget.SlideHolder;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+
+public class PreferenceActivity extends Activity{
+
+	private final String size_student = "s_student";
+	private final String size_professor = "s_professor";
+	private final String login = "login";
+	
+	private SlideHolder mSlideHolder;
+	private ListView listView;
+	
+	static final String[] SETTING = new String[] {"공지사항", "로그 아웃","push 알림"};
+	
+	//private final String size_notice = "s_notice";
+	
+	public void setSlideHolder(){
+
+		mSlideHolder = (SlideHolder) findViewById(R.id.slideHolder);
+	    mSlideHolder.setAllowInterceptTouch(false);
+		
+	    listView = (ListView)findViewById(R.id.elv_list);
+	    listView.setAdapter(new ArrayAdapter<String>(this,R.layout.list_item,SETTING));
+	    
+	    listView.setOnItemClickListener(new ListView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                    long id) {
+                
+                String item = ((TextView)view).getText().toString();
+                
+                if(item.equals(SETTING[1])){
+                	delete_login();
+                	startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                	finish();
+                }else if(item.equals(SETTING[2])){
+                	/*
+                	//푸쉬 받기
+    				if(isChecked){
+    					Log.d("test","푸쉬 메시지를 받습니다.");
+    					GCMRegistrar.checkDevice(mContext);
+    					GCMRegistrar.checkManifest(mContext);
+    					if(GCMRegistrar.getRegistrationId(mContext).equals("")){
+    						GCMRegistrar.register(mContext, PROJECT_ID);
+    					}else{
+    						//이미 GCM 을 상요하기위해 등록ID를 구해왔음
+    						GCMRegistrar.unregister(mContext);
+    						GCMRegistrar.register(mContext, PROJECT_ID);
+    					}
+    				}
+    				//푸쉬 받지않기
+    				else{
+    					Log.d("test","푸쉬 메시지를 받지 않습니다.");
+    					GCMRegistrar.unregister(mContext);
+    				}
+    				*/
+                }
+                
+                
+                Toast.makeText(getBaseContext(), item, Toast.LENGTH_LONG).show();
+            }
+        });
+	}
+	
+
+	public boolean insert_regId(String regId){
+		try{
+			SharedPreferences prefs = getSharedPreferences("login", Activity.MODE_PRIVATE);
+			SharedPreferences.Editor editor = prefs.edit();
+			editor.putString("login_id", id);
+			editor.putString("login_pw", pw);
+			Toast.makeText(getApplicationContext(), "id : " + id + "pw : " + pw, Toast.LENGTH_LONG).show();
+			editor.commit();
+		} catch(Exception e){
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean insert_login(String id, String pw){
+		try{
+			SharedPreferences prefs = getSharedPreferences("login", Activity.MODE_PRIVATE);
+			SharedPreferences.Editor editor = prefs.edit();
+			editor.putString("login_id", id);
+			editor.putString("login_pw", pw);
+			Toast.makeText(getApplicationContext(), "id : " + id + "pw : " + pw, Toast.LENGTH_LONG).show();
+			editor.commit();
+		} catch(Exception e){
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean insert_student(String id, String pw){
+		int size = GetPrefInt(size_student);
+		
+		try{
+			SharedPreferences prefs = getSharedPreferences("student", Activity.MODE_PRIVATE);
+			SharedPreferences.Editor editor = prefs.edit();
+			editor.putString("id_" + size, id);
+			editor.putString("pw_" + size, pw);
+			editor.commit();
+		} catch(Exception e){
+			return false;
+		}
+		
+		SetPref(size_student, size+1);
+		return true;
+	}
+	
+	public boolean insert_professor(String id, String pw){
+		int size = GetPrefInt(size_professor);
+		
+		try{
+			SharedPreferences prefs = getSharedPreferences("professor", Activity.MODE_PRIVATE);
+			SharedPreferences.Editor editor = prefs.edit();
+			editor.putString("id_" + size, id);
+			editor.putString("pw_" + size, pw);
+
+			editor.commit();
+		} catch(Exception e){
+			return false;
+		}
+		
+		SetPref(size_professor, size+1);
+		return true;
+	}
+	
+	public boolean delete_login(){
+		
+		try{
+			SharedPreferences prefs = getSharedPreferences("login",
+					Activity.MODE_PRIVATE);
+			SharedPreferences.Editor editor = prefs.edit();
+		
+			editor.remove("login_id");
+			editor.remove("login_pw");
+				
+			editor.commit();
+		} catch(Exception e){
+			return false;
+		}
+		
+		return true;
+	}
+	
+	public boolean delete_student(String id){
+		
+		final int size = GetPrefInt(size_student);
+		try{
+			SharedPreferences prefs = getSharedPreferences("student",
+					Activity.MODE_PRIVATE);
+			SharedPreferences.Editor editor = prefs.edit();
+			
+			for( int i = 0; i < size; i++ ){
+				String src = prefs.getString("id_" + i, null);
+				if( src.equals(id) == true ){
+					editor.remove("id_" + i);
+					editor.remove("pw_" + i);
+					
+					for( int j = i+1; j <= size; j++ ){
+						editor.putString("id_" + (j-1), prefs.getString("id_"+j, null));
+						editor.putString("pw_" + (j-1), prefs.getString("pw_"+j, null));
+					}
+				}
+			}
+			editor.commit();
+		} catch(Exception e){
+			return false;
+		}
+		
+		SetPref(size_student, size-1);
+		return true;
+	}
+	
+	public boolean delete_professor(String id){
+		final int size = GetPrefInt(size_professor);
+		
+		try{
+			SharedPreferences prefs = getSharedPreferences("professor", Activity.MODE_PRIVATE);
+			SharedPreferences.Editor editor = prefs.edit();
+			
+			for( int i = 0; i < size; i++ ){
+				String src = prefs.getString("id_" + i, null);
+				if( src.equals(id) == true ){
+					editor.remove("id_" + i);
+					editor.remove("pw_" + i);
+					
+					for( int j = i+1; j <= size; j++ ){
+						editor.putString("id_" + (j-1), prefs.getString("id_" + j, null));
+						editor.putString("pw_" + (j-1), prefs.getString("pw_" + j, null));
+					}
+				}
+			}
+			editor.commit();
+		} catch(Exception e){
+			return false;
+		}
+		
+
+		SetPref(size_student, size-1);
+		return true;
+	}
+//	public boolean update_student(String id, String pw){
+//		
+//	}
+//	
+//	public boolean update_professor(String id, String pw){
+//		
+//	}
+	
+	public boolean isCheck_login(){
+		
+		SharedPreferences prefs = getSharedPreferences("login", Activity.MODE_PRIVATE);
+		
+		if((prefs.getString("login_id", null) != null ) && (prefs.getString("login_pw", null) != null)){
+			return true;
+		}
+		return false;
+	}
+	
+
+	public Person check_login(){
+		
+		SharedPreferences prefs = getSharedPreferences("login", Activity.MODE_PRIVATE);
+		
+		String id = prefs.getString("login_id",null);		
+		String pw = prefs.getString("login_pw",null);
+			
+		Toast.makeText(getApplicationContext(), "id : " + id + "pw : " + pw, Toast.LENGTH_LONG).show();
+			
+		return new Person(id,pw);
+	}
+	
+	public Person read_person(){
+		Person person = new Person();
+		person.setsList(read_student());
+		person.setpList(read_professor());
+		return person;
+	}
+	
+	public Map<String,Student> read_student(){
+		Map<String,Student> sList = new HashMap<String,Student>();
+		
+		int size = GetPrefInt(size_student);
+		
+		SharedPreferences prefs = getSharedPreferences("student", Activity.MODE_PRIVATE);
+		
+		for( int i = 0; i < size; i++ ){
+			
+			String id = prefs.getString("id_" + i, null);		
+			String pw = prefs.getString("pw_" + i, null);
+	
+			sList.put(id,new Student(id,pw));
+		}
+		
+		return sList;
+	}
+	
+	public  Map<String,Professor> read_professor(){
+		 Map<String,Professor> pList = new HashMap<String,Professor>();
+		
+		int size = GetPrefInt(size_professor);
+		
+		SharedPreferences prefs = getSharedPreferences("professor", Activity.MODE_PRIVATE);
+		
+		for( int i = 0; i < size; i++ ){
+			String id = prefs.getString("id_" + i, null);
+			String pw = prefs.getString("pw_" + i, null);
+
+			pList.put(id,new Professor(id, pw));
+		}
+		return pList;
+	}
+	
+	public void SetPref(String key, int value) {
+		SharedPreferences prefs = getSharedPreferences("noname",
+				Activity.MODE_PRIVATE);
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putInt(key, value);
+		editor.commit();
+	}
+
+	public int GetPrefInt(String key) {
+		SharedPreferences prefs = getSharedPreferences("noname",
+				Activity.MODE_PRIVATE);
+		return prefs.getInt(key, 0);
+	}
+
+	public void DeletePref(String key) {
+		SharedPreferences prefs = getSharedPreferences("noname",
+				Activity.MODE_PRIVATE);
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.remove(key);
+		editor.commit();
+	}
+	
+}

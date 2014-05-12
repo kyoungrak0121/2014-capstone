@@ -1,0 +1,98 @@
+package com.example.pushtest;
+
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBar;
+import android.support.v4.app.Fragment;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.os.Build;
+
+public class MainActivity extends ActionBarActivity {
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+
+		if (savedInstanceState == null) {
+			getSupportFragmentManager().beginTransaction()
+					.add(R.id.container, new PlaceholderFragment()).commit();
+		}
+		
+		  // 디바이스 GCM 사용 가능한지 확인
+        GCMRegistrar.checkDevice(this);
+        // 매니페스트 설정이 올바른지 확인
+        GCMRegistrar.checkManifest(this);
+        // 등록
+        registerToken();
+		
+	}
+
+
+    /**
+     * GCM에 디바이스 토큰 등록
+     */
+    private void registerToken() {
+        // registration ID（디바이스 토큰) 취득하고 등록되지 않은 경우 GCM에 등록
+        final String regId = GCMRegistrar.getRegistrationId(this);
+        if ("".equals(regId)) {
+        	GCMRegistrar.register(this, GCMIntentService.SENDER_ID);
+        }
+    }
+    
+    /**
+     * GCM에 디바이스토큰 삭제
+     */
+    private void unregisterToken() {
+        if (GCMRegistrar.isRegistered(this)) {
+        	GCMRegistrar.unregister(this);
+        }
+    } 
+
+		 
+	
+	
+	
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		if (id == R.id.action_settings) {
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	/**
+	 * A placeholder fragment containing a simple view.
+	 */
+	public static class PlaceholderFragment extends Fragment {
+
+		public PlaceholderFragment() {
+		}
+
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+				Bundle savedInstanceState) {
+			View rootView = inflater.inflate(R.layout.fragment_main, container,
+					false);
+			return rootView;
+		}
+	}
+
+}

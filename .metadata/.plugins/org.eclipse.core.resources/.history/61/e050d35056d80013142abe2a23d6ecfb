@@ -1,0 +1,83 @@
+package com.example.pushtest;
+
+
+import com.google.android.gcm.GCMRegistrar;
+
+import android.os.Bundle;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+
+
+public class GCMMain extends Activity implements OnClickListener{
+	private static final String TAG = "GCM";
+	private static final String PASSWORD = "1111";
+	//자신의 Project ID 를 넣어주세요
+	private static final String SENDER_ID = "41362468480";	
+
+    private EditText managerPassword;
+    private Button managerButton;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        
+        //GCM 등록여부
+      	final String regId = GCMRegistrar.getRegistrationId(this);
+      	//등록된 ID가 없으면 ID값을 얻어옵니다
+      	if (regId.equals("") || regId == null) {
+      		GCMRegistrar.register(this, SENDER_ID);
+      	}else{
+      		Log.w(TAG, "Already Registered : " + regId);
+      	}
+        setInit();
+    }
+    
+    public void setInit(){
+    	managerPassword = (EditText)findViewById(R.id.managerPassword);
+        managerButton = (Button)findViewById(R.id.managerButton);
+        managerButton.setOnClickListener(this);
+    }
+    
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		if(v.getId() == R.id.managerButton){
+			String str = managerPassword.getText().toString();
+			if(str == "" || str == null || !str.equals(PASSWORD)){
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						finish();				
+					}
+				});
+				builder.setTitle("알림");
+				builder.setMessage("비밀번호 틀림");
+				Dialog dialog = builder.create();
+				dialog.show();
+			}else if(str.equals(PASSWORD)){
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						Intent intent = new Intent(GCMMain.this, GCMSendMessage.class);
+						startActivity(intent);
+						finish();				
+					}
+				});
+				builder.setTitle("알림");
+				builder.setMessage("비밀번호 확인");
+				Dialog dialog = builder.create();
+				dialog.show();
+			}
+		}
+	}
+}

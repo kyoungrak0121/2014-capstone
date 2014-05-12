@@ -1,0 +1,138 @@
+package com.example.push;
+
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.example.push.R;
+import com.example.push.table.Globals;
+import com.google.android.gcm.server.Message;
+import com.google.android.gcm.server.Result;
+import com.google.android.gcm.server.Sender;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+
+public class ProfessorActivity extends PreferenceActivity {
+
+	private static final String TAG = "GCM";
+	
+	private Sender 			    gcmSender = null;				//GCM Sender
+	private Message 			gcmMessage = null;			//GCM Message
+	private Result 				gcmResult = null;				//GCM Result(단일 전송)
+//	private MulticastResult 	gcmMultiResult;		//GCM Multi Result(일괄 전송)
+	
+	private Globals globals;
+	
+	//단일전송에 필요한 변수
+	private String  registrationId ;
+	//DB에서 RegID를 가져오기 위해 만들어진 서버 페이지 주소 
+	//private static final String SELECT_PAGE = "http://자신의 서버 아이피/select_registration.php";
+	//파싱하기 위해 데이터를 담을 변수
+	//private static String JSON = null;
+	//개발자 콘솔에서 발급받은 API Key
+	private static String 		API_KEY = "AIzaSyC0IIOyF2A2Sg_Sto0BmF6-QQRn4qM0sq8";
+	//메세지의 고유 ID(?)정도로 생각하면 됩니다. 메세지의 중복수신을 막기 위해 랜덤값을 지정합니다
+	private static String 		COLLAPSE_KEY = String.valueOf(Math.random() % 100 + 1);
+	//기기가 활성화 상태일 때 보여줄 것인지. 
+	private static boolean 	DELAY_WHILE_IDLE = true;
+	//기기가 비활성화 상태일 때 GCM Storage에 보관되는 시간
+	private static int			TIME_TO_LIVE = 3;
+	//메세지 전송 실패시 재시도할 횟수
+	private static int 			RETRY = 3;
+	
+	private EditText pushTitle;
+	private EditText pushMessage;
+	private TextView pushLength;
+	private Button pushTrans;
+	
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+	
+		
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.layout_professor);
+
+		globals = Globals.getInstance();
+		
+		pushTitle = (EditText) findViewById(R.id.pushTitle);
+		pushMessage = (EditText) findViewById(R.id.pushMessage);
+		pushLength = (TextView) findViewById(R.id.pushLength);
+
+		pushTrans = (Button) findViewById(R.id.pushTrans);
+
+		setSlideHolder();
+		
+		
+		pushTrans.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if(pushTitle.length() == 0 || pushMessage.length() == 0){
+					Toast.makeText(getApplicationContext(), "입력메시지를 전부 입력하세요", Toast.LENGTH_LONG).show();
+				}else{
+					
+					setMessage();
+					
+					new Thread(new Runnable() {	
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+							sendMessage();		
+						}
+					}).start();
+							
+				}
+			}
+		});
+		
+
+	}
+	
+
+	public void setMessage(){
+	
+		gcmSender = new Sender(API_KEY);
+		
+		gcmMessage = new Message.Builder()
+			.collapseKey(COLLAPSE_KEY)
+			.delayWhileIdle(DELAY_WHILE_IDLE).timeToLive(TIME_TO_LIVE)
+			.addData("ticker", "공지사항")
+			.addData("title", pushTitle.getText().toString())
+			.addData("msg", pushMessage.getText().toString())
+			.build();
+
+	}
+	
+	public void sendMessage(){
+		//일괄전송시에 사용
+//		try {
+//			gcmMultiResult = gcmSender.send(gcmMessage, registrationIds, RETRY);
+//		} catch (IOException e) {
+//			Log.w(TAG, "IOException " + e.getMessage());
+//		}
+//		Log.w(TAG, "getCanonicalIds : " + gcmMultiResult.getCanonicalIds() + "\n" + 
+//				"getSuccess : " + gcmMultiResult.getSuccess() + "\n" + 
+//				"getTotal : " + gcmMultiResult.getTotal() + "\n" + 
+//				"getMulticastId : " + gcmMultiResult.getMulticastId());
+		
+		//단일전송시에 사용
+		try {
+		
+			gcmResult = gcmSender.send(gcmMessage,,RETRY);
+		 	
+		}catch(IOException e) {
+			Log.w(TAG, "IOException " + e.getMessage());
+		}
+	}
+
+}

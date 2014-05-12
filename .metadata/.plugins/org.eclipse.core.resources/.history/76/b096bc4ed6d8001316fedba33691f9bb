@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.push"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="19" />
+
+    <!-- C2DM 권한 설정 -->
+    <permission
+        android:name="com.example.push.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.example.push.permission.C2D_MESSAGE" />
+
+    <!-- App receives GCM messages. -->
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <!-- 인터넷 연결 권한 설정 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- GCM requires a Google account. -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <!-- Keeps the processor from sleeping when a message is received. -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.example.push.Activity.SplashActivity"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.example.push.Activity.MainActivity"
+            android:label="@string/title_activity_init" >
+        </activity>
+        <activity
+            android:name="com.example.push.Activity.ProfessorActivity"
+            android:label="@string/title_activity_professor" >
+        </activity>
+        <activity
+            android:name="com.example.push.Activity.PreferenceActivity"
+            android:label="@string/title_activity_professor" >
+        </activity>
+        <activity
+            android:name="com.example.push.Activity.StudentActivity"
+            android:label="@string/title_activity_student" >
+        </activity>
+
+        <!-- GCM -->
+        <receiver
+            android:name="com.google.android.gcm.GCMBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+                <category android:name="com.example.push" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name="com.example.push.GCM.GCMIntentService" >
+        </service>
+
+        <activity
+            android:name="com.example.push.GCM.GCMInit"
+            android:label="@string/title_activity_gcminit" >
+        </activity>
+    </application>
+
+</manifest>
