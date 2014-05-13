@@ -4,8 +4,10 @@ import com.example.push.R;
 import com.example.push.table.Globals;
 import com.google.android.gcm.GCMRegistrar;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -26,6 +28,7 @@ public class SplashActivity extends PreferenceActivity {
 		
 		globals = Globals.getInstance();	
 
+		
 		initialize();
 	}
 
@@ -41,6 +44,7 @@ public class SplashActivity extends PreferenceActivity {
 				todoBeforeLaunch(); // 값 넣기  
 				getLaunchData(); // 초기화 
 				
+				Log.w(TAG,"show ragid "+read_regId());
 				
 				startActivity(new Intent(getApplicationContext(), MainActivity.class));
 				
@@ -52,13 +56,22 @@ public class SplashActivity extends PreferenceActivity {
 		
 	}
 	private void setGCM(){
-		Log.w(TAG, "Start Registered : ");
-	    //GCM 등록여부
-		GCMRegistrar.unregister(this);
-		GCMRegistrar.checkDevice(this);
-		GCMRegistrar.checkManifest(this);
+		Log.w(TAG, "Start Registered:");
+	 
+		//GCMRegistrar.unregister(this); // GCM 사용 x 
+		  try {
+			  GCMRegistrar.checkDevice(this); // 디바이스의 GCM 사용 확인 
+	        } catch (Exception e) {
+	            // TODO: handle exception
+	            Log.e(TAG, "This device can't use GCM");
+	            return;
+	        }
+	         
+		
+		GCMRegistrar.checkManifest(this); // 매니페스트 설정 확인
         
-		String regId = GCMRegistrar.getRegistrationId(this); // 받아옴 
+		//GCM 등록여부
+		final String regId = GCMRegistrar.getRegistrationId(this); // 받아옴 
       	//등록된 ID가 없으면 ID값을 얻어옵니다
       	if (regId.equals("") || regId == null) {
       		GCMRegistrar.register(this, SENDER_ID);
@@ -67,9 +80,11 @@ public class SplashActivity extends PreferenceActivity {
       	}
       	
       	
-  		
+    	if(isCheck_regId()){
+    		GCMRegistrar.register(this, SENDER_ID);
+      	}
+      	
 	}
-
 	private void todoBeforeLaunch() {
 
 		if (GetPrefInt("first") == 0) {
@@ -91,7 +106,6 @@ public class SplashActivity extends PreferenceActivity {
 	
 	private void getLaunchData(){
 		globals.setPerson(read_person());
-		globals.setRegistrationIds(read_regId());
 	}
 	
 	

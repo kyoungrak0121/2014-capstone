@@ -6,54 +6,43 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.push.R;
+import com.example.push.professor.fragment.GeneralFragment;
 import com.example.push.table.Globals;
 import com.google.android.gcm.server.Message;
 import com.google.android.gcm.server.Result;
 import com.google.android.gcm.server.Sender;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.storage.OnObbStateChangeListener;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class ProfessorActivity extends PreferenceActivity {
+public class ProfessorActivity extends PreferenceActivity implements OnClickListener {
 
-	private static final String TAG = "GCM";
-	
-	private Sender 			    gcmSender = null;				//GCM Sender
-	private Message 			gcmMessage = null;			//GCM Message
-	private Result 				gcmResult = null;				//GCM Result(단일 전송)
-//	private MulticastResult 	gcmMultiResult;		//GCM Multi Result(일괄 전송)
-	
+	final String TAG = "ProfessorActivity";
+	 
 	private Globals globals;
 	
-	//단일전송에 필요한 변수
-	private String  registrationId ;
-	//DB에서 RegID를 가져오기 위해 만들어진 서버 페이지 주소 
-	//private static final String SELECT_PAGE = "http://자신의 서버 아이피/select_registration.php";
-	//파싱하기 위해 데이터를 담을 변수
-	//private static String JSON = null;
-	//개발자 콘솔에서 발급받은 API Key
-	private static String 		API_KEY = "AIzaSyC0IIOyF2A2Sg_Sto0BmF6-QQRn4qM0sq8";
-	//메세지의 고유 ID(?)정도로 생각하면 됩니다. 메세지의 중복수신을 막기 위해 랜덤값을 지정합니다
-	private static String 		COLLAPSE_KEY = String.valueOf(Math.random() % 100 + 1);
-	//기기가 활성화 상태일 때 보여줄 것인지. 
-	private static boolean 	DELAY_WHILE_IDLE = true;
-	//기기가 비활성화 상태일 때 GCM Storage에 보관되는 시간
-	private static int			TIME_TO_LIVE = 3;
-	//메세지 전송 실패시 재시도할 횟수
-	private static int 			RETRY = 3;
+	private TextView notify ;
+	private Button general_btn;
+	private Button cancel_a_class_btn;
+	private Button supplement_btn;
+	private Button task_btn;
 	
-	private EditText pushTitle;
-	private EditText pushMessage;
-	private TextView pushLength;
-	private Button pushTrans;
-	
+	int mCurrentFragmentIndex;
+	public final static int FRAGMENT_GENERAL = 0;
+	public final static int FRAGMENT_CANCLE_A_CLASS = 1;
+	public final static int FRAGMENT_SUPPLEMENT = 2;
+	public final static int FRAGMENT_TASK = 3;	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,77 +53,102 @@ public class ProfessorActivity extends PreferenceActivity {
 
 		globals = Globals.getInstance();
 		
-		pushTitle = (EditText) findViewById(R.id.pushTitle);
-		pushMessage = (EditText) findViewById(R.id.pushMessage);
-		pushLength = (TextView) findViewById(R.id.pushLength);
-
-		pushTrans = (Button) findViewById(R.id.pushTrans);
-
 		setSlideHolder();
+		setLayout();
 		
-		
-		pushTrans.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				if(pushTitle.length() == 0 || pushMessage.length() == 0){
-					Toast.makeText(getApplicationContext(), "입력메시지를 전부 입력하세요", Toast.LENGTH_LONG).show();
-				}else{
-					
-					setMessage();
-					
-					new Thread(new Runnable() {	
-						@Override
-						public void run() {
-							// TODO Auto-generated method stub
-							sendMessage();		
-						}
-					}).start();
-							
-				}
-			}
-		});
+		 mCurrentFragmentIndex = FRAGMENT_GENERAL;
+		 
+	     fragmentReplace(mCurrentFragmentIndex);
 	}
 	
-	public void setMessage(){
 	
-		gcmSender = new Sender(API_KEY);
+	
+	public void setLayout(){
 		
-		gcmMessage = new Message.Builder()
-			.collapseKey(COLLAPSE_KEY)
-			.delayWhileIdle(DELAY_WHILE_IDLE).timeToLive(TIME_TO_LIVE)
-			.addData("ticker", "공지사항")
-			.addData("title", pushTitle.getText().toString())
-			.addData("msg", pushMessage.getText().toString())
-			.build();
-
+		general_btn = (Button)findViewById(R.id.general_btn);
+		cancel_a_class_btn = (Button)findViewById(R.id.cancel_a_class_btn);
+		supplement_btn = (Button)findViewById(R.id.supplement_btn);
+		task_btn = (Button)findViewById(R.id.task_btn);
+		notify = (TextView)findViewById(R.id.notify);
+		
+		general_btn.setOnClickListener(this);
+		cancel_a_class_btn.setOnClickListener(this);
+		supplement_btn.setOnClickListener(this);
+		task_btn.setOnClickListener(this);
+		
 	}
 	
-	public void sendMessage(){
-		//일괄전송시에 사용
-//		try {
-//			gcmMultiResult = gcmSender.send(gcmMessage, registrationIds, RETRY);
-//		} catch (IOException e) {
-//			Log.w(TAG, "IOException " + e.getMessage());
-//		}
-//		Log.w(TAG, "getCanonicalIds : " + gcmMultiResult.getCanonicalIds() + "\n" + 
-//				"getSuccess : " + gcmMultiResult.getSuccess() + "\n" + 
-//				"getTotal : " + gcmMultiResult.getTotal() + "\n" + 
-//				"getMulticastId : " + gcmMultiResult.getMulticastId());
+	
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
 		
-		//단일전송시에 사용
-		try {
-			Log.w(TAG," "+gcmMessage);
-			//Log.w(TAG," "+globals.getRegistrationIds().get(0));
-			Log.w(TAG," "+RETRY);
-			
-			String s = "APA91bFWrqz8nnRHxnsB8TqcgsIq5Pv3pFA37bITJYefutiUj0YDww5hq2It55KrYUXo6J1mmOgoHLr0DoNK2vaRjKo1qYiXT6iaKKinqxOQ6V3RpZl-fGEHP9alCUUWq4bmdF4gRQ9Wk1tBYmlUh1uPoQiyhQ0ZLQ";
-			
-			gcmResult = gcmSender.send(gcmMessage,s,RETRY);
-		 	
-		}catch(IOException e) {
-			Log.w(TAG, "IOException " + e.getMessage());
-		}
+		 switch (v.getId()) {
+		 
+	        case R.id.general_btn:
+	            mCurrentFragmentIndex = FRAGMENT_GENERAL;
+	            fragmentReplace(mCurrentFragmentIndex);
+	            break;
+	        case R.id.cancel_a_class_btn:
+	        	mCurrentFragmentIndex = FRAGMENT_CANCLE_A_CLASS;
+	            fragmentReplace(mCurrentFragmentIndex);
+	            break;
+	        case R.id.supplement_btn:
+	            mCurrentFragmentIndex = FRAGMENT_SUPPLEMENT;
+	            fragmentReplace(mCurrentFragmentIndex);
+	            break;
+	        case R.id.task_btn:
+	            mCurrentFragmentIndex = FRAGMENT_TASK;
+	            fragmentReplace(mCurrentFragmentIndex);
+	            break;
+	        }
 	}
-
+	
+	   public void fragmentReplace(int reqNewFragmentIndex) {
+		   
+	        Fragment newFragment = null;
+	 
+	        Log.d(TAG, "fragmentReplace " + reqNewFragmentIndex);
+	 
+	        newFragment = getFragment(reqNewFragmentIndex);
+	 
+	        // replace fragment
+	        final FragmentTransaction transaction = getFragmentManager().beginTransaction();
+	        transaction.replace(R.id.ll_fragment, newFragment);
+	 
+	        // Commit the transaction
+	        transaction.commit();
+	 
+	    }
+	 
+	    private Fragment getFragment(int idx) {
+	        Fragment newFragment = null;
+	 
+	        switch (idx) {
+	        case FRAGMENT_GENERAL:
+	        	notify.setText("일반 공지");
+	            newFragment = new GeneralFragment();
+	            break;
+	        case FRAGMENT_CANCLE_A_CLASS:
+	        	notify.setText("휴강 공지");
+	  //          newFragment = new CancleAClassFragment();
+	            break;
+	        case FRAGMENT_SUPPLEMENT:
+	        	notify.setText("보강 공지");
+	  //          newFragment = new SupplementFragment();
+	            break;
+	        case FRAGMENT_TASK:
+	        	notify.setText("과제 공지");
+	 //           newFragment = new TaskFragment();
+	            break;
+	 
+	        default:
+	            Log.d(TAG, "Unhandle case");
+	            break;
+	        }
+	      
+	        return newFragment;
+	    }
+	
+		
 }

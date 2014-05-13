@@ -33,7 +33,7 @@ public class PreferenceActivity extends Activity{
 	private SlideHolder mSlideHolder;
 	private ListView listView;
 	
-	static final String[] SETTING = new String[] {"공지사항", "로그 아웃","push 알림"};
+	static final String[] SETTING = new String[] {"setting", "Logout","push setting"};
 	
 	//private final String size_notice = "s_notice";
 	
@@ -58,60 +58,38 @@ public class PreferenceActivity extends Activity{
                 	finish();
                 }else if(item.equals(SETTING[2])){
                 	/*
-                	//푸쉬 받기
+                
     				if(isChecked){
-    					Log.d("test","푸쉬 메시지를 받습니다.");
+    					
     					GCMRegistrar.checkDevice(mContext);
     					GCMRegistrar.checkManifest(mContext);
     					if(GCMRegistrar.getRegistrationId(mContext).equals("")){
     						GCMRegistrar.register(mContext, PROJECT_ID);
     					}else{
-    						//이미 GCM 을 상요하기위해 등록ID를 구해왔음
+    					
     						GCMRegistrar.unregister(mContext);
     						GCMRegistrar.register(mContext, PROJECT_ID);
     					}
     				}
-    				//푸쉬 받지않기
+    				
     				else{
-    					Log.d("test","푸쉬 메시지를 받지 않습니다.");
+    					
     					GCMRegistrar.unregister(mContext);
     				}
     				*/
                 }
-                
-                
+                            
                 Toast.makeText(getBaseContext(), item, Toast.LENGTH_LONG).show();
             }
         });
 	}
 	
-
-	public boolean insert_regId(String regId){
-		int size = GetPrefInt(size_regId);
-		
-		try{
-			SharedPreferences prefs = getSharedPreferences("regId", Activity.MODE_PRIVATE);
-			SharedPreferences.Editor editor = prefs.edit();
-			editor.putString("regId_"+size, regId);
-			Toast.makeText(getApplicationContext(), "regId : " + regId , Toast.LENGTH_LONG).show();
-			editor.commit();
-		} catch(Exception e){
-			return false;
-		}
-		
-		Log.w("LogTest" , regId);
-		
-		SetPref(size_regId, size+1);
-		return true;
-	}
-	
 	public boolean insert_login(String id, String pw){
 		try{
-			SharedPreferences prefs = getSharedPreferences("login", Activity.MODE_PRIVATE);
+			SharedPreferences prefs = getSharedPreferences("login", MODE_PRIVATE);
 			SharedPreferences.Editor editor = prefs.edit();
 			editor.putString("login_id", id);
 			editor.putString("login_pw", pw);
-			Toast.makeText(getApplicationContext(), "id : " + id + "pw : " + pw, Toast.LENGTH_LONG).show();
 			editor.commit();
 		} catch(Exception e){
 			return false;
@@ -237,6 +215,17 @@ public class PreferenceActivity extends Activity{
 //		
 //	}
 	
+	public boolean isCheck_regId(){
+		
+		SharedPreferences prefs = getSharedPreferences("regId", Activity.MODE_PRIVATE);
+		
+		if((prefs.getString("regId", null) != null )){
+			return true;
+		}
+		return false;
+	}
+	
+	
 	public boolean isCheck_login(){
 		
 		SharedPreferences prefs = getSharedPreferences("login", Activity.MODE_PRIVATE);
@@ -254,24 +243,15 @@ public class PreferenceActivity extends Activity{
 		
 		String id = prefs.getString("login_id",null);		
 		String pw = prefs.getString("login_pw",null);
-			
-		Toast.makeText(getApplicationContext(), "id : " + id + "pw : " + pw, Toast.LENGTH_LONG).show();
-			
+		
 		return new Person(id,pw);
 	}
 	
-	public  List<String> read_regId(){
-		List<String> regId = new ArrayList<String>();
-		
-		int size = GetPrefInt(size_regId);
+	public  String read_regId(){
 		
 		SharedPreferences prefs = getSharedPreferences("regId", Activity.MODE_PRIVATE);
-
-		for( int i = 0; i < size; i++ ){
-			String id = prefs.getString("regId_" + i, null);
-			Log.w("readRegId" , "Id" +id );
-			regId.add(id);
-		}		
+		String regId = prefs.getString("regId", null);
+		
 		return regId;
 	}
 	

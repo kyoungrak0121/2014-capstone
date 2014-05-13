@@ -49,7 +49,7 @@ public class MainActivity extends PreferenceActivity {
 
 		if (isCheck_login()) {
 	
-			Toast.makeText(getApplicationContext(), "자동 로그인 확인 중 ...", Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(), "login ...", Toast.LENGTH_LONG).show();
 			Person p = check_login();
 			if(authCheck(p.getId(), p.getPw())){
 				startActivity(intent);
@@ -116,10 +116,10 @@ public class MainActivity extends PreferenceActivity {
 					return true;
 				}
 			}
-			Toast.makeText(this, "비밀번호를 확인해 주세요.", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, " Login failed ( PWD Check ) ", Toast.LENGTH_LONG).show();
 			return false;
 		} else {
-			Toast.makeText(this, "ID를 확인해 주세요.", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, " Login failed ( ID Check ) ", Toast.LENGTH_LONG).show();
 			return false;
 		}
 	}

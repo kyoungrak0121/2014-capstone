@@ -8,6 +8,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
@@ -59,9 +60,14 @@ public class GCMIntentService extends GCMBaseIntentService {
 	protected void onRegistered(Context context, String regID) {
 		// TODO Auto-generated method stub
 		
-		Log.w(TAG, "!!!!! " + regID);
+
 		if(!regID.equals("") || regID != null){
-			Log.w(TAG, "onRegistered!! " + regID);		
+			
+			SharedPreferences prefs = getSharedPreferences("regId", Activity.MODE_PRIVATE); 
+			SharedPreferences.Editor editor = prefs.edit();
+			editor.putString("regId",regID);
+			editor.commit();
+			
 //			窜老傈价老锭 林籍贸府
 //			insertRegistrationID(regID);
 		}

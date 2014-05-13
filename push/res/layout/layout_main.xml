@@ -55,7 +55,11 @@
                 android:id="@+id/login_id"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:hint="ID를 입력해주세요" />
+                android:hint="Input the ID" 
+                android:gravity="center"
+                android:maxLines="1"
+                android:textSize="15sp"
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -77,7 +81,11 @@
                 android:id="@+id/login_pwd"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:hint="Pass word를 입력해주세요" />
+                android:hint="Input the Password "
+                android:gravity="center"
+                android:maxLines="1"
+                android:textSize="15sp"
+                 />
         </LinearLayout>
 
         <Switch
