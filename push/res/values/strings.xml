@@ -10,5 +10,6 @@
     <string name="title_activity_student">StudentActivity</string>
     <string name="title_activity_gcminit">GCMInit</string>
     <string name="title_activity_main">MainActivity</string>
-
+    <string name="title_activity_cancle_class_fragment">CancleClassFragment</string>
+    <string name="title_activity_calendar_adapter">CalendarAdapter</string>
 </resources>

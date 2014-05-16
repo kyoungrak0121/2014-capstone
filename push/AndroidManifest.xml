@@ -24,7 +24,6 @@
     <!-- Keeps the processor from sleeping when a message is received. -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    
 
     <application
         android:allowBackup="true"
@@ -33,6 +32,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.example.push.SplashActivity"
+           
             android:label="@string/app_name"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
@@ -58,7 +58,6 @@
             android:label="@string/title_activity_student" >
         </activity>
 
-        
         <!-- GCM -->
         <receiver
             android:name="com.google.android.gcm.GCMBroadcastReceiver"
@@ -73,7 +72,15 @@
 
         <service android:name="com.example.push.GCMIntentService" >
         </service>
+
+        <activity
+            android:name="com.example.push.professor.fragment.CancleClassFragment"
+            android:label="@string/title_activity_cancle_class_fragment" >
+        </activity>
+        <activity
+            android:name="com.example.push.adapter.CalendarAdapter"
+            android:label="@string/title_activity_calendar_adapter" >
+        </activity>
     </application>
 
 </manifest>
-

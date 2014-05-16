@@ -21,6 +21,8 @@ public class GeneralFragment extends SuperFragment {
 	private EditText pushMessage;
 	private TextView pushLength;
 	private Button pushTrans;
+	
+	String regId;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -28,10 +30,8 @@ public class GeneralFragment extends SuperFragment {
 
 		View v = inflater.inflate(R.layout.genenal_fragment, container, false);
 
-		SharedPreferences prefs = this.getActivity().getSharedPreferences("regId", Activity.MODE_PRIVATE);
-		final String regId = prefs.getString("regId", null);	
-
 		setLayout(v);
+		init();
 		
 		pushTrans.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -49,13 +49,23 @@ public class GeneralFragment extends SuperFragment {
 							// TODO Auto-generated method stub
 							sendMessage(regId);		
 						}
-					}).start();
-							
+					}).start();				
+					init();
 				}
 			}
 		});
-	
 		return v;
+	}
+	
+	void init(){
+		pushTitle.setText("");
+		pushMessage.setText("");
+		
+		// //////////////////////////////////
+		// /////id 나중에 DB로 변경!!
+		SharedPreferences prefs = this.getActivity().getSharedPreferences(
+				"regId", Activity.MODE_PRIVATE);
+		regId = prefs.getString("regId", null);
 	}
 
 	void setLayout(View v) {

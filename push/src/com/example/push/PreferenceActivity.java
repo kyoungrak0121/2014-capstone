@@ -12,10 +12,12 @@ import com.example.push.table.Student;
 import com.example.push.widget.SlideHolder;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -32,6 +34,7 @@ public class PreferenceActivity extends Activity{
 	
 	private SlideHolder mSlideHolder;
 	private ListView listView;
+	
 	
 	static final String[] SETTING = new String[] {"setting", "Logout","push setting"};
 	
@@ -319,4 +322,15 @@ public class PreferenceActivity extends Activity{
 		editor.commit();
 	}
 	
+	public boolean hideSoftInputWindow(View edit_view, boolean bState) {
+
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
+		if (bState)
+			return imm.showSoftInput(edit_view, 0);
+		else
+			return imm.hideSoftInputFromWindow(edit_view.getWindowToken(),
+					InputMethodManager.HIDE_NOT_ALWAYS);
+
+	}
 }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.push.R;
+import com.example.push.professor.fragment.CancleClassFragment;
 import com.example.push.professor.fragment.GeneralFragment;
 import com.example.push.table.Globals;
 import com.google.android.gcm.server.Message;
@@ -47,7 +48,6 @@ public class ProfessorActivity extends PreferenceActivity implements OnClickList
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 	
-		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_professor);
 
@@ -74,8 +74,7 @@ public class ProfessorActivity extends PreferenceActivity implements OnClickList
 		general_btn.setOnClickListener(this);
 		cancel_a_class_btn.setOnClickListener(this);
 		supplement_btn.setOnClickListener(this);
-		task_btn.setOnClickListener(this);
-		
+		task_btn.setOnClickListener(this);		
 	}
 	
 	
@@ -84,7 +83,6 @@ public class ProfessorActivity extends PreferenceActivity implements OnClickList
 		// TODO Auto-generated method stub
 		
 		 switch (v.getId()) {
-		 
 	        case R.id.general_btn:
 	            mCurrentFragmentIndex = FRAGMENT_GENERAL;
 	            fragmentReplace(mCurrentFragmentIndex);
@@ -97,7 +95,7 @@ public class ProfessorActivity extends PreferenceActivity implements OnClickList
 	            mCurrentFragmentIndex = FRAGMENT_SUPPLEMENT;
 	            fragmentReplace(mCurrentFragmentIndex);
 	            break;
-	        case R.id.task_btn:
+	        case R.id.task_btn: 
 	            mCurrentFragmentIndex = FRAGMENT_TASK;
 	            fragmentReplace(mCurrentFragmentIndex);
 	            break;
@@ -131,9 +129,9 @@ public class ProfessorActivity extends PreferenceActivity implements OnClickList
 	            break;
 	        case FRAGMENT_CANCLE_A_CLASS:
 	        	notify.setText("휴강 공지");
-	  //          newFragment = new CancleAClassFragment();
+	            newFragment = new CancleClassFragment();
 	            break;
-	        case FRAGMENT_SUPPLEMENT:
+	 /*       case FRAGMENT_SUPPLEMENT:
 	        	notify.setText("보강 공지");
 	  //          newFragment = new SupplementFragment();
 	            break;
@@ -141,7 +139,7 @@ public class ProfessorActivity extends PreferenceActivity implements OnClickList
 	        	notify.setText("과제 공지");
 	 //           newFragment = new TaskFragment();
 	            break;
-	 
+	 */
 	        default:
 	            Log.d(TAG, "Unhandle case");
 	            break;

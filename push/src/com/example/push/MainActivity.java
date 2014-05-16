@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -35,15 +36,13 @@ public class MainActivity extends PreferenceActivity {
 		setContentView(R.layout.layout_main);
 		
 		globals = Globals.getInstance();
-	
+		
 		setSlideHolder();
 
 		globals = Globals.getInstance();
-
-		login_id = (EditText) findViewById(R.id.login_id);
-		login_pwd = (EditText) findViewById(R.id.login_pwd);
-		login_btn = (Button) findViewById(R.id.login_btn);
 		
+		setLayout();
+				
 
 		switch_btn = (Switch) findViewById(R.id.switch_btn);
 
@@ -87,6 +86,12 @@ public class MainActivity extends PreferenceActivity {
 			}
 		});
 		
+	}
+	
+	private void setLayout() {
+		login_id = (EditText) findViewById(R.id.login_id);
+		login_pwd = (EditText) findViewById(R.id.login_pwd);
+		login_btn = (Button) findViewById(R.id.login_btn);
 	}
 
 	private boolean authCheck(String id, String pw) {
