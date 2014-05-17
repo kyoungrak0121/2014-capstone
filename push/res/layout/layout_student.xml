@@ -39,11 +39,13 @@
                 android:src="@drawable/logo" />
 
             <Button
+                android:id = "@+id/notice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:orientation="horizontal"
-                android:text="질문하기" />
+                android:text="공지보기" />
+   
 
             <Button
                 android:layout_width="wrap_content"

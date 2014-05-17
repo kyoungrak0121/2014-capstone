@@ -1,20 +1,39 @@
 package com.example.push;
 
-import com.example.push.R;
-
-import android.content.Intent;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-public class StudentActivity extends PreferenceActivity {
-	
+
+public class StudentActivity extends PreferenceActivity{
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		
-		
+	
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_student);
 		setSlideHolder();
 		
+		Context mContext = getApplicationContext();//view가 alert 이면 팝업실행 즉 버튼을 누르면 팝업창이 뜨는 조건
+        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
+		
+        View layout = inflater.inflate(R.layout.dialog,(ViewGroup) findViewById(R.id.popup));
+        AlertDialog.Builder aDialog = new AlertDialog.Builder(StudentActivity.this);
+    	
+        aDialog.setTitle("공지사항 목록"); //타이틀바 제목
+        aDialog.setView(layout); //dialog.xml 파일을 뷰로 셋팅
+        
+        aDialog.setNegativeButton("닫기", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        //팝업창 생성
+        AlertDialog ad = aDialog.create();
+        ad.show();//보여줌!
 	}
+}	
+	
 
-}
