@@ -2,10 +2,7 @@ package com.example.push;
 
 import java.util.Map;
 
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,45 +12,37 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import com.example.push.db.MySQLiteOpenHelper;
+import com.example.push.db.DBManager;
 import com.example.push.table.Globals;
 import com.example.push.table.Person;
 import com.example.push.table.Professor;
 import com.example.push.table.Student;
 
-public class MainActivity extends PreferenceActivity {
+public class MainActivity extends PreferenceActivity{
 
 	private Globals globals;
-
 	private EditText login_id;
 	private EditText login_pwd;
 	private Button login_btn;
 	private Intent intent;
 	private Switch switch_btn;
-
-	//database 전역 변수
-	public SQLiteDatabase db;
-	public MySQLiteOpenHelper helper;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_main);
 		
-		//database
-	
-//		helper = new MySQLiteOpenHelper(MainActivity.this,"person.db",null,1);
-//		insert("유저1",18,"경기도");
-//		insert("유저2",14,"갱기도");
-//		insert("유저3",15,"각기도");
-//		
-//		select();
-//			
-		//database
+		DBManager manager = new DBManager(this);
+		manager.insert_stu(5,"123", "123");
+		manager.insert_stu(6,"1111", "11123");
+		manager.insert_prof("123","111");
+		manager.insert_prof("111","122");
 		
 		globals = Globals.getInstance();
 		
 		setSlideHolder();
 
+		
 		globals = Globals.getInstance();
 		
 		setLayout();
@@ -100,9 +89,7 @@ public class MainActivity extends PreferenceActivity {
 				}
 			}
 		});
-		
-	}
-	
+	}	
 	private void setLayout() {
 		login_id = (EditText) findViewById(R.id.login_id);
 		login_pwd = (EditText) findViewById(R.id.login_pwd);
@@ -143,31 +130,5 @@ public class MainActivity extends PreferenceActivity {
 			return false;
 		}
 	}
-	// database 
-
-	public void insert(String name, int age , String address){
-		db = helper.getWritableDatabase();
-		
-		ContentValues values = new ContentValues();
-		values.put("name", name);
-		values.put("age", age);
-		values.put("address", address);
-		db.insert("student", null, values);
-	}
-	
-	public void select(){
-		db = helper.getReadableDatabase();
-		
-		Cursor c = db.query("student", null, null, null, null, null, null);
-		
-		while(c.moveToNext()){
-			int _id = c.getInt(c.getColumnIndex("_id"));
-			String name = c.getString(c.getColumnIndex("name"));
-			int age = c.getInt(c.getColumnIndex("age"));
-			String address = c.getString(c.getColumnIndex("address"));
-			Log.i("db" , "id : " + _id + ",name : "+ name + ",age :" + age + ",address : " +address);  
-			
-		}
-	}
-	
 }
+	

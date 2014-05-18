@@ -38,7 +38,6 @@ public class PreferenceActivity extends Activity{
 	
 	static final String[] SETTING = new String[] {"setting", "Logout","push setting"};
 	
-	//private final String size_notice = "s_notice";
 	
 	public void setSlideHolder(){
 
@@ -210,13 +209,6 @@ public class PreferenceActivity extends Activity{
 		SetPref(size_student, size-1);
 		return true;
 	}
-//	public boolean update_student(String id, String pw){
-//		
-//	}
-//	
-//	public boolean update_professor(String id, String pw){
-//		
-//	}
 	
 	public boolean isCheck_regId(){
 		

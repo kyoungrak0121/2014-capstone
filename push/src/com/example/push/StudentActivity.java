@@ -3,19 +3,23 @@ package com.example.push;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
 
 
 public class StudentActivity extends PreferenceActivity{
 	@Override
-	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_student);
 		setSlideHolder();
+			
 		
 		Context mContext = getApplicationContext();//view가 alert 이면 팝업실행 즉 버튼을 누르면 팝업창이 뜨는 조건
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -33,6 +37,16 @@ public class StudentActivity extends PreferenceActivity{
         //팝업창 생성
         AlertDialog ad = aDialog.create();
         ad.show();//보여줌!
+        
+        // 식단 확인
+        Button button =(Button)findViewById(R.id.meal);
+        button.setOnClickListener(new Button.OnClickListener(){
+        	public void onClick(View v){
+        		
+        		startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://m.mju.ac.kr/mbs/mjumob/jsp/subview.jsp?id=mjumob_050000000000")));
+        	}
+        });
+        
 	}
 }	
 	
