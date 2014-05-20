@@ -57,7 +57,7 @@ private static final String TAG = "GCM";
 			.build();
 	}
 	
-	public void setMessage(String kicker,String title,Map<Integer,Map<Integer, Integer>> mSelectDayList){
+	public void setMessage(String kicker,String title,Map<Integer,Map<Integer, String>> mSelectDayList){
 		
 		gcmSender = new Sender(API_KEY);
 		
@@ -65,7 +65,7 @@ private static final String TAG = "GCM";
 	
 		msg = getMessage(mSelectDayList);
 		
-		msg += "\n 휴강합니다.";
+		msg += "\n 보강합니다.";
 		
 		
 		gcmMessage = new Message.Builder()
@@ -80,7 +80,7 @@ private static final String TAG = "GCM";
 		
 	}
 	
-	public String getMessage(Map<Integer,Map<Integer, Integer>> mSelectDayList){
+	public String getMessage(Map<Integer,Map<Integer, String>> mSelectDayList){
 		
 		String msg = "";
 		Iterator mKeySet = mSelectDayList.keySet().iterator();
@@ -91,11 +91,18 @@ private static final String TAG = "GCM";
 			
 			while(dKeySet.hasNext()){
 				Integer dKey = (Integer)dKeySet.next();
-				msg += "  "+mKey +"/" + mSelectDayList.get(mKey).get(dKey);
+				
+				if(dKey.toString().equals(mSelectDayList.get(mKey).get(dKey))){
+					msg += "   "+mKey +"/" + dKey;
+				}else{
+					msg += "   "+mKey +"/" + dKey + " ("+ mSelectDayList.get(mKey).get(dKey)+")";
+				}
 			}
 		} // while
 		return msg;
 	}
+	
+	
 	
 	public void sendMessage(String regId){
 		
@@ -131,5 +138,4 @@ private static final String TAG = "GCM";
 			Log.w(TAG, "IOException " + e.getMessage());
 		}
 	}
-	
 }

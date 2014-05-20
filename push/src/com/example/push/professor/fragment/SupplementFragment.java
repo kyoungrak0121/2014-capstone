@@ -1,7 +1,9 @@
 package com.example.push.professor.fragment;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -12,9 +14,12 @@ import com.example.push.table.DayInfo;
 import com.example.push.widget.Calender;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,9 +30,10 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
-public class CancleClassFragment extends Calender  implements OnItemClickListener, OnClickListener{
+public class SupplementFragment extends Calender  implements OnItemClickListener, OnClickListener{
 
 	private TextView mTvCalenderSelect;
 	private TextView mTvCalendarTitle;
@@ -76,9 +82,8 @@ public class CancleClassFragment extends Calender  implements OnItemClickListene
 		mTvCalenderSelect.setText("");
 		mThisMonthCalendar = Calendar.getInstance();
         mThisMonthCalendar.set(Calendar.DAY_OF_MONTH, 1);
-        
-        setCalender();
    
+        setCalender();
 	}
 
 	void setCalender(){
@@ -119,16 +124,18 @@ public class CancleClassFragment extends Calender  implements OnItemClickListene
     	
     	DayInfo day = (DayInfo)mCalendarAdapter.getItem(position);
 
-    	selectData = "";
-    	    	
-    	if(day.isInMonth()){
-    			
+    	if(day.isInMonth()){    			
     		setSelectData(parent,v,month,day);
-    		
-    		selectData = getMessage(mSelectDayList);
-        	mTvCalenderSelect.setText(""+selectData);
         
     	}
+    }
+    
+    void showSelectList(){
+    	selectData = "";
+    	selectData = getMessage(mSelectDayList);
+		
+    	mTvCalenderSelect.setText(""+selectData);
+    	
     }
     
     public void setSelectData(AdapterView<?> parent,View v ,int month, DayInfo day ){
@@ -137,8 +144,7 @@ public class CancleClassFragment extends Calender  implements OnItemClickListene
     		mSelectDayList = new TreeMap<Integer, Map<Integer, String>>();
     	}
     	
-
-    	if(!mSelectDayList.containsKey(month)){
+    	if(!mSelectDayList.containsKey(month)){ // key 가 없으면 
     		Map<Integer,String> selectDay = new TreeMap<Integer, String>(); 
     		mSelectDayList.put(month, selectDay);
     	}
@@ -150,6 +156,8 @@ public class CancleClassFragment extends Calender  implements OnItemClickListene
     		Log.w("Day : " , ""+day.getDay() );
     		v.setBackgroundColor(Color.parseColor("#F08080"));
     		selectCount++;
+    		
+    		showDialog(month,day);
     		
     	}else{
     		
@@ -190,7 +198,7 @@ public class CancleClassFragment extends Calender  implements OnItemClickListene
 				final String regId = prefs.getString("regId", null);
 
 				// DB
-				setMessage("휴강공지", "XX 강의 휴강 공지", mSelectDayList);
+				setMessage("보강공지", "XX 강의 보강 공지", mSelectDayList);
 
 				new Thread(new Runnable() {
 					@Override
@@ -219,7 +227,27 @@ public class CancleClassFragment extends Calender  implements OnItemClickListene
    	protected void getCalendarWeek(){
    		
    		mCalenderWeekAdapter = new CalendarWeekAdapter(week, R.layout.week ,getActivity());
-   		mGvCalenderWeek.setAdapter(mCalenderWeekAdapter);
+   		mGvCalenderWeek.setAdapter(mCalenderWeekAdapter);	
+   	}
+   	
+   	void showDialog(final int month ,final DayInfo day){
+   		long now = System.currentTimeMillis();
+   		Date date = new Date(now);
    		
+   		SimpleDateFormat CurHourFormat = new SimpleDateFormat("HH");
+   		SimpleDateFormat CurMinuteFormat = new SimpleDateFormat("mm");
+   		final int strCurHour = Integer.parseInt(CurHourFormat.format(date));
+   		final int strCurMinute = Integer.parseInt(CurMinuteFormat.format(date));
+   		
+   		TimePickerDialog dialog = new TimePickerDialog(getActivity(),new TimePickerDialog.OnTimeSetListener() {
+			@Override
+			public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+				// TODO Auto-generated method stub
+				mSelectDayList.get(month).put(Integer.parseInt(day.getDay()), "" + strCurHour + " : " + strCurMinute  );
+				showSelectList();
+			}
+		},strCurHour,strCurMinute,false);
+		dialog.setTitle("setting Time!!");
+		dialog.show();
    	}
 }

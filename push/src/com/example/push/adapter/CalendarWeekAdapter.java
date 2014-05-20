@@ -9,18 +9,11 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-/**
- * BaseAdapter를 상속받아 구현한 CalendarAdapter
- * 
- * @author croute
- * @since 2011.03.08
- */
-public class CalendarWeekAdapter extends BaseAdapter {
+public class CalendarWeekAdapter extends GridviewAdapter {
 	String[] weekList =  null;
 	Context contxt;
 
@@ -99,34 +92,4 @@ public class CalendarWeekAdapter extends BaseAdapter {
 
 		return convertView;
 	}
-	
-	public class DayViewHolde {
-		public LinearLayout llBackground;
-		public TextView tvDay;
-
-	} 
-
-    private int getCellWidthDP()
-    {
-//      int width = mContext.getResources().getDisplayMetrics().widthPixels;
-        int cellWidth = 480/7;
-         
-        return cellWidth;
-    }
-     
-    private int getRestCellWidthDP()
-    {
-//      int width = mContext.getResources().getDisplayMetrics().widthPixels;
-        int cellWidth = 480%7;
-         
-        return cellWidth;
-    }
-     
-    private int getCellHeightDP()
-    {
-//      int height = mContext.getResources().getDisplayMetrics().widthPixels;
-        int cellHeight = 480/6;
-         
-        return cellHeight;
-    }
 }
