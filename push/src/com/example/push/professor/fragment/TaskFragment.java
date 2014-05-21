@@ -35,14 +35,13 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-public class SupplementFragment extends Calender  implements OnItemClickListener, OnClickListener{
+public class TaskFragment extends Calender  implements OnItemClickListener, OnClickListener{
 
-	
 	private TextView inputDate;
 	private TextView inputTime;
 	private TextView inputMessage;
-
-
+	
+	
 	private TextView mTvCalenderSelect;
 	private TextView mTvCalendarTitle;
 	private GridView mGvCalendar;
@@ -63,7 +62,7 @@ public class SupplementFragment extends Calender  implements OnItemClickListener
 	
 	String selectData ; 
 	int selectCount;
-	String sup_location ;
+	String task_message ;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,7 +74,6 @@ public class SupplementFragment extends Calender  implements OnItemClickListener
 		
 		init();
 		
-        
 		return v;
 		
 	}
@@ -86,21 +84,20 @@ public class SupplementFragment extends Calender  implements OnItemClickListener
 	     
 		mSelectDayList = null;
 		selectData  = "";
+		task_message="";
 		selectCount = 0;
-		
-		sup_location="";
 		
 		mTvCalenderSelect.setText("");
 		mThisMonthCalendar = Calendar.getInstance();
         mThisMonthCalendar.set(Calendar.DAY_OF_MONTH, 1);
-        
+   
     	inputDate.setTextColor(Color.parseColor("#5D5D5D"));
 		inputMessage.setTextColor(Color.parseColor("#5D5D5D"));
 		inputTime.setTextColor(Color.parseColor("#5D5D5D"));
 	
 		
-   
         setCalender();
+        
 	}
 
 	void setCalender(){
@@ -123,17 +120,14 @@ public class SupplementFragment extends Calender  implements OnItemClickListener
 	     
 	     mPushbtn = (Button)v.findViewById(R.id.pushTrans);
 	     
-
 	     inputDate = (TextView)v.findViewById(R.id.inputDate);
 	 	 inputTime = (TextView)v.findViewById(R.id.inputTime);
 	 	 inputMessage = (TextView)v.findViewById(R.id.inputMessage);
 	     
 	 	 inputDate.setText("날짜 선택 -> ");
 	 	 inputTime.setText("시간 선택 -> ");
-	 	 inputMessage.setText("장소 입력 -> ");
+	 	 inputMessage.setText("메시지 입력 -> ");
 	 	 
-	 	 
-	    
 	     mPushbtn.setOnClickListener(this);
 	     bLastMonth.setOnClickListener(this);
 	     bNextMonth.setOnClickListener(this);
@@ -154,21 +148,21 @@ public class SupplementFragment extends Calender  implements OnItemClickListener
 
     	if(day.isInMonth()){    			
     		setSelectData(parent,v,month,day);
-        
     	}
     }
     
     void showSelectList(){
     	selectData = "";
-    	
-    	if(sup_location.equals("")){
-    		sup_location = "미입력";
+    	if(task_message.equals("")){
+    		task_message = "미입력";
     	}
     	if(!(getMessage(mSelectDayList).equals("") || getMessage(mSelectDayList).equals(null))){
-    		selectData ="일시 : " + getMessage(mSelectDayList) + "\n장소 :   "+ sup_location;
+    		selectData ="일시 : " + getMessage(mSelectDayList) + "\n내용 :  "+ task_message;
     	}
     	
+		
     	mTvCalenderSelect.setText(""+selectData);
+    	
     }
     
     public void setSelectData(AdapterView<?> parent,View v ,int month, DayInfo day ){
@@ -184,21 +178,25 @@ public class SupplementFragment extends Calender  implements OnItemClickListener
     	
     	// 날짜 가 없으면 넣음
     	if(!mSelectDayList.get(month).containsKey(Integer.parseInt(day.getDay()))){ 
+    		
     		if(selectCount < 1){
     			showDialog(parent,month,day,v);
     			
     		}else{
     			Toast.makeText(getActivity(),"이미 입력 하셨습니다.", Toast.LENGTH_SHORT).show();
     		}
+    		
     	}else{
     		
+    		
     		removeDate(parent,month,day,v);
+    		
     		v.setBackgroundDrawable(parent.getBackground());
-    		if(!(selectCount > 0) ){
-    			inputDate.setTextColor(Color.parseColor("#5D5D5D"));
-        		inputMessage.setTextColor(Color.parseColor("#5D5D5D"));
-        		inputTime.setTextColor(Color.parseColor("#5D5D5D"));
-    		}
+    		inputDate.setTextColor(Color.parseColor("#5D5D5D"));
+    		inputMessage.setTextColor(Color.parseColor("#5D5D5D"));
+    		inputTime.setTextColor(Color.parseColor("#5D5D5D"));
+    	
+    		
     		showSelectList();
     		
     	}
@@ -228,7 +226,7 @@ public class SupplementFragment extends Calender  implements OnItemClickListener
 				// //////////////////////////////////
 				// /////id 나중에 DB로 변경!
 				// DB
-				setMessage("보강공지", "XX 강의 보강 공지", mSelectDayList,sup_location + " 보강합니다.");
+				setMessage("과제 공지", "XX 강의 과제 공지", mSelectDayList,task_message);
 
 				new Thread(new Runnable() {
 					@Override
@@ -241,7 +239,7 @@ public class SupplementFragment extends Calender  implements OnItemClickListener
 				init();
 				
 			}else{
-				Toast.makeText(getActivity(),"보강 날짜를 선택하여 주십시오.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(),"과제 공지 날짜와 시간을 선택하여 주십시오.", Toast.LENGTH_SHORT).show();
 			}
 			break;
 		}
@@ -272,7 +270,8 @@ public class SupplementFragment extends Calender  implements OnItemClickListener
     
     private void removeDate(AdapterView<?> parent ,int month , DayInfo day, View v){
    		selectCount--;
-		mSelectDayList.get(month).remove(Integer.parseInt(day.getDay()));
+   		task_message="";
+   		mSelectDayList.get(month).remove(Integer.parseInt(day.getDay()));
 		
 		
    	}
@@ -294,12 +293,19 @@ public class SupplementFragment extends Calender  implements OnItemClickListener
 				// TODO Auto-generated method stub				
 				
 				insertDate(parent,month,day,v);
+				
 				v.setBackgroundColor(Color.parseColor("#F08080"));
+				
 				inputDate.setTextColor(Color.parseColor("#F08080"));
 				inputTime.setTextColor(Color.parseColor("#F08080"));
 				
-				mSelectDayList.get(month).put(Integer.parseInt(day.getDay()), "" + hourOfDay + " : " + minute );				
+				mSelectDayList.get(month).put(Integer.parseInt(day.getDay()), "" + hourOfDay + " : " + minute );
+				
+				
 				myTextDialog();
+				
+				
+				
 			}
 			
 		},strCurHour,strCurMinute,false);
@@ -308,21 +314,20 @@ public class SupplementFragment extends Calender  implements OnItemClickListener
 		dialog.show();
    	}
    	
- 	protected void myTextDialog() {
+   	protected void myTextDialog() {
 		final Dialog dialog = new Dialog(getActivity());
 		dialog.setContentView(R.layout.task_message_dialog);
-		dialog.setTitle("보강 장소 공지");
+		dialog.setTitle("과제 공지");
 		Button ok = (Button) dialog.findViewById(R.id.buttonOK);
 		Button no = (Button) dialog.findViewById(R.id.buttonNO);
 		final TextView tv = (TextView) dialog.findViewById(R.id.task_message);
-		
 		
 		ok.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				
-				sup_location += tv.getText().toString();
+				task_message = tv.getText().toString();
 				inputMessage.setTextColor(Color.parseColor("#F08080"));
 				showSelectList();
 				dialog.dismiss();		
@@ -335,7 +340,7 @@ public class SupplementFragment extends Calender  implements OnItemClickListener
 			public void onClick(View v) {
 				
 				showSelectList();
-				sup_location="";
+				task_message="";
 				dialog.dismiss();
 			}
 		});
@@ -343,6 +348,4 @@ public class SupplementFragment extends Calender  implements OnItemClickListener
 		dialog.show();
 
 	}
-
-	
 }

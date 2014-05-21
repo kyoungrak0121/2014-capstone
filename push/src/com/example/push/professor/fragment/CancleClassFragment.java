@@ -29,6 +29,10 @@ import android.widget.Toast;
 
 public class CancleClassFragment extends Calender  implements OnItemClickListener, OnClickListener{
 
+	
+	private TextView inputDate;
+	
+	
 	private TextView mTvCalenderSelect;
 	private TextView mTvCalendarTitle;
 	private GridView mGvCalendar;
@@ -56,11 +60,9 @@ public class CancleClassFragment extends Calender  implements OnItemClickListene
 		// TODO Auto-generated method stub
 		View v = inflater.inflate(R.layout.cancle_class_fragment, container, false);
 		
-		setLayout(v);
-		
+		setLayout(v);		
 		init();
-		
-        
+
 		return v;
 		
 	}
@@ -76,6 +78,8 @@ public class CancleClassFragment extends Calender  implements OnItemClickListene
 		mTvCalenderSelect.setText("");
 		mThisMonthCalendar = Calendar.getInstance();
         mThisMonthCalendar.set(Calendar.DAY_OF_MONTH, 1);
+        
+        inputDate.setTextColor(Color.parseColor("#5D5D5D"));
         
         setCalender();
    
@@ -101,6 +105,10 @@ public class CancleClassFragment extends Calender  implements OnItemClickListene
 	     
 	     mPushbtn = (Button)v.findViewById(R.id.pushTrans);
 	    
+	     inputDate = (TextView)v.findViewById(R.id.inputTime);
+	     
+	     inputDate.setText("날짜 선택 -> ");
+	     
 	     mPushbtn.setOnClickListener(this);
 	     bLastMonth.setOnClickListener(this);
 	     bNextMonth.setOnClickListener(this);
@@ -149,6 +157,8 @@ public class CancleClassFragment extends Calender  implements OnItemClickListene
     		mSelectDayList.get(month).put(Integer.parseInt(day.getDay()),day.getDay());
     		Log.w("Day : " , ""+day.getDay() );
     		v.setBackgroundColor(Color.parseColor("#F08080"));
+    		inputDate.setTextColor(Color.parseColor("#F08080"));
+    		
     		selectCount++;
     		
     	}else{
@@ -157,6 +167,10 @@ public class CancleClassFragment extends Calender  implements OnItemClickListene
     		mSelectDayList.get(month).remove(Integer.parseInt(day.getDay()));
     		
     		v.setBackgroundDrawable(parent.getBackground());
+    		
+    		if(!(selectCount > 0 )){
+    			inputDate.setTextColor(Color.parseColor("#5D5D5D"));
+    		}
     		
     		//Toast.makeText(getActivity(),"delete : "+month+"/"+day.getDay(), Toast.LENGTH_SHORT).show();
         	
@@ -183,20 +197,14 @@ public class CancleClassFragment extends Calender  implements OnItemClickListene
         	
 			if (selectCount > 0) {
 
-				// //////////////////////////////////
-				// /////id 나중에 DB로 변경!!
-				SharedPreferences prefs = this.getActivity()
-						.getSharedPreferences("regId", Activity.MODE_PRIVATE);
-				final String regId = prefs.getString("regId", null);
-
 				// DB
-				setMessage("휴강공지", "XX 강의 휴강 공지", mSelectDayList);
+				setMessage("휴강공지", "XX 강의 휴강 공지", mSelectDayList,"휴강 합니다.");
 
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
-						sendMessage(regId);
+						sendMessage();
 					}
 				}).start();
 			

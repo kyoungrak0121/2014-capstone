@@ -51,7 +51,12 @@
                         android:layout_height="wrap_content"
                         android:text="일반 공지"
                         android:textSize="12sp" />
-
+                     <Button
+                        android:id="@+id/task_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="과제 공지"
+                        android:textSize="12sp" />
                     <Button
                         android:id="@+id/cancel_a_class_btn"
                         android:layout_width="wrap_content"
@@ -66,12 +71,7 @@
                         android:text="보강 공지"
                         android:textSize="12sp" />
 
-                    <Button
-                        android:id="@+id/task_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="과제 공지"
-                        android:textSize="12sp" />
+                   
                 </TableRow>
             </TableLayout>
         </LinearLayout>

@@ -8,6 +8,8 @@ import java.util.List;
 import com.example.push.R;
 import com.example.push.professor.fragment.CancleClassFragment;
 import com.example.push.professor.fragment.GeneralFragment;
+import com.example.push.professor.fragment.SupplementFragment;
+import com.example.push.professor.fragment.TaskFragment;
 import com.example.push.table.Globals;
 import com.google.android.gcm.server.Message;
 import com.google.android.gcm.server.Result;
@@ -131,15 +133,14 @@ public class ProfessorActivity extends PreferenceActivity implements OnClickList
 	        	notify.setText("휴강 공지");
 	            newFragment = new CancleClassFragment();
 	            break;
-	 /*       case FRAGMENT_SUPPLEMENT:
+	        case FRAGMENT_SUPPLEMENT:
 	        	notify.setText("보강 공지");
-	  //          newFragment = new SupplementFragment();
+	           newFragment = new SupplementFragment();
 	            break;
 	        case FRAGMENT_TASK:
 	        	notify.setText("과제 공지");
-	 //           newFragment = new TaskFragment();
+	            newFragment = new TaskFragment();
 	            break;
-	 */
 	        default:
 	            Log.d(TAG, "Unhandle case");
 	            break;

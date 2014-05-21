@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.push.R;
 import com.google.android.gcm.GCMBaseIntentService;
 
 public class GCMIntentService extends GCMBaseIntentService {

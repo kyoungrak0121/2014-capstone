@@ -1,12 +1,15 @@
 package com.example.push.professor.fragment;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import com.example.push.R;
 import com.example.push.table.Globals;
 import com.google.android.gcm.server.Message;
+import com.google.android.gcm.server.MulticastResult;
 import com.google.android.gcm.server.Result;
 import com.google.android.gcm.server.Sender;
 
@@ -25,7 +28,7 @@ private static final String TAG = "GCM";
 	
 	private Sender 	gcmSender  =  null;				//GCM Sender
 	private Message gcmMessage = null;			//GCM Message
-	private Result 	gcmResult  =  null;				//GCM Result()
+	private MulticastResult 	gcmResult  =  null;				//GCM Result()
 //	private MulticastResult 	gcmMultiResult;		
 
 //GCM Multi Result()
@@ -40,6 +43,8 @@ private static final String TAG = "GCM";
 	private static int	        TIME_TO_LIVE = 3;
 	private static int 			RETRY = 3;
 
+	
+	List<String> regId ;
 	
 
 	public void setMessage(String kicker,String title, String message){
@@ -57,7 +62,7 @@ private static final String TAG = "GCM";
 			.build();
 	}
 	
-	public void setMessage(String kicker,String title,Map<Integer,Map<Integer, String>> mSelectDayList){
+	public void setMessage(String kicker,String title,Map<Integer,Map<Integer, String>> mSelectDayList,String content){
 		
 		gcmSender = new Sender(API_KEY);
 		
@@ -65,7 +70,7 @@ private static final String TAG = "GCM";
 	
 		msg = getMessage(mSelectDayList);
 		
-		msg += "\n 보강합니다.";
+		msg += content;
 		
 		
 		gcmMessage = new Message.Builder()
@@ -104,7 +109,7 @@ private static final String TAG = "GCM";
 	
 	
 	
-	public void sendMessage(String regId){
+	public void sendMessage(){
 		
 //		try {
 //			gcmMultiResult = gcmSender.send(gcmMessage, registrationIds, RETRY);
@@ -116,24 +121,38 @@ private static final String TAG = "GCM";
 //				"getTotal : " + gcmMultiResult.getTotal() + "\n" + 
 //				"getMulticastId : " + gcmMultiResult.getMulticastId());
 		
+		
+		regId = new ArrayList();
+		
+		SharedPreferences prefs = this.getActivity()
+				.getSharedPreferences("regId", Activity.MODE_PRIVATE);
+		 
+		
+		
+		//박세진 id
+		regId.add("APA91bHAV3oobSzSbgP3KLO9Gsw3FYiTAzEAFohamqXlAEf3dVuuW3DGroO_bUoJKmS2wOGxoYfD7KuZQ2JrX3GO9nLVw9P67Q1mlMUkHSN_2XX2szBW2W_UKX02hF5BbSjSSzi4WzYi");
+		//SharedPreferences에 저장된 아이디
+		regId.add(prefs.getString("regId", null));
+		
 		try {
+			
 			
 			Log.w(TAG,""+gcmMessage);
 			Log.w(TAG,""+regId);
 			Log.w(TAG,""+RETRY);
 			
-			//박세진 id 
-			String id = "APA91bHAV3oobSzSbgP3KLO9Gsw3FYiTAzEAFohamqXlAEf3dVuuW3DGroO_bUoJKmS2wOGxoYfD7KuZQ2JrX3GO9nLVw9P67Q1mlMUkHSN_2XX2szBW2W_UKX02hF5BbSjSSzi4WzYi";
+			
 			
 			//Log.w(TAG,""+id);
 			
 			//test 내 아이디 
 			gcmResult = gcmSender.send(gcmMessage,regId,RETRY);
+			
 			//gcmResult = gcmSender.send(gcmMessage,id,RETRY);
-			if (gcmResult.getMessageId() != null) {
-                Log.w(TAG,"Send success");
-               // Toast.makeText(getActivity(),"메세지를 보냈습니다.", Toast.LENGTH_SHORT).show();
-			}
+		
+			Log.w(TAG,"success "+gcmResult.getSuccess());
+			
+			
 		}catch(IOException e) {
 			Log.w(TAG, "IOException " + e.getMessage());
 		}
