@@ -19,6 +19,7 @@
         android:gravity="center"
         android:hint="Input the Message"
         android:maxLines="8"
+        android:maxLength="80"
         android:textSize="15sp" />
 
     <LinearLayout

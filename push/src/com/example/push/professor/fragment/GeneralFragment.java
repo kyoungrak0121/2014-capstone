@@ -129,8 +129,6 @@ public class GeneralFragment extends SuperFragment implements OnClickListener {
 		pushMessage.setFilters(new InputFilter[]{
 				new InputFilter.LengthFilter(80)
 		});
-		
-
 	}
 
 	@Override
@@ -143,19 +141,28 @@ public class GeneralFragment extends SuperFragment implements OnClickListener {
 					"제목과 내용을 모두 입력 해주세요.", Toast.LENGTH_LONG).show();
 		} else {
 
-			setMessage("공지사항", pushTitle.getText().toString(), pushMessage
-					.getText().toString());
+			setPushMessage("공지사항", pushTitle.getText().toString(), pushMessage.getText().toString());
+			setSMSMessage("공지사항", pushTitle.getText().toString(), pushMessage.getText().toString());
 
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
 					// TODO Auto-generated method stub
-					sendMessage();
+					sendPushMessage();
+					
 				}
 			}).start();
+			
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					sendSMSMessage("01092886788");
+				}
+			}).start();
+			
 			init();
 		}
-
 	}
 
 }

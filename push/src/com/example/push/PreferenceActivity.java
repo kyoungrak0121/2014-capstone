@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import com.example.push.R;
 import com.example.push.table.Person;
@@ -12,10 +14,13 @@ import com.example.push.table.Student;
 import com.example.push.widget.SlideHolder;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -37,6 +42,9 @@ public class PreferenceActivity extends Activity{
 	
 	
 	static final String[] SETTING = new String[] {"setting", "Logout","push setting"};
+	
+	private boolean mPressFirstBackKey = false;      // Back의 상태값을 저장하기 위한 변수
+	private Timer timer;
 	
 	
 	public void setSlideHolder(){
@@ -325,4 +333,31 @@ public class PreferenceActivity extends Activity{
 					InputMethodManager.HIDE_NOT_ALWAYS);
 
 	}
+	
+	public void onBackPressed() {
+
+		if (mPressFirstBackKey == false) { // Back 키가 첫번째로 눌린 경우
+			Toast.makeText(getApplication(), "뒤로 버튼을 한번 더 누르면 종료합니다.", Toast.LENGTH_LONG).show();
+			mPressFirstBackKey = true;
+			// ------------------------------------------------------------------
+			// Back키가 2초내에 두번 눌렸는지 감지
+			TimerTask second = new TimerTask() {
+				@Override
+				public void run() {
+					timer.cancel();
+					timer = null;
+					mPressFirstBackKey = false;
+				}
+			};
+			if (timer != null) {
+				timer.cancel();
+				timer = null;
+			}
+			timer = new Timer();
+			timer.schedule(second, 2000);
+		} else
+			super.onBackPressed();
+
+	}
+	
 }

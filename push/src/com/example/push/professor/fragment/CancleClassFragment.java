@@ -172,8 +172,6 @@ public class CancleClassFragment extends Calender  implements OnItemClickListene
     			inputDate.setTextColor(Color.parseColor("#5D5D5D"));
     		}
     		
-    		//Toast.makeText(getActivity(),"delete : "+month+"/"+day.getDay(), Toast.LENGTH_SHORT).show();
-        	
     	}
     	
     }
@@ -198,13 +196,22 @@ public class CancleClassFragment extends Calender  implements OnItemClickListene
 			if (selectCount > 0) {
 
 				// DB
-				setMessage("휴강공지", "XX 강의 휴강 공지", mSelectDayList,"휴강 합니다.");
+				setPushMessage("휴강공지", "XX 강의 휴강 공지", mSelectDayList,"휴강 합니다.");
+				setSMSMessage("휴강공지", "XX 강의 휴강 공지", mSelectDayList,"휴강 합니다.");
 
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
-						sendMessage();
+						sendPushMessage();
+					}
+				}).start();
+				
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						sendSMSMessage("01092886788");
 					}
 				}).start();
 			

@@ -15,8 +15,8 @@
             android:id="@+id/inputTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="3"
             android:text="Title 입력 -> "
-            android:layout_weight="3" 
             android:textColor="#5D5D5D"
             android:textSize="12sp"
             android:textStyle="bold" />
@@ -25,8 +25,8 @@
             android:id="@+id/inputMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="3"
             android:text="Message 입력 -> "
-             android:layout_weight="3" 
             android:textColor="#5D5D5D"
             android:textSize="12sp"
             android:textStyle="bold" />
@@ -34,104 +34,103 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="3"
             android:text="Send Message 선택"
-            android:layout_weight="3" 
             android:textColor="#5D5D5D"
             android:textSize="12sp"
             android:textStyle="bold" />
-
     </LinearLayout>
 
-        <LinearLayout
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="15dp"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="10dp" >
+
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_marginTop="15dp"
-            android:layout_weight="2"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="10dp" >
+            android:layout_height="wrap_content"
+            android:text="Title"
+            android:textColor="#5D5D5D"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Title"
-                android:textColor="#5D5D5D"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/pushTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                
-                android:hint="Title bar"
-                android:gravity="center"
-                android:maxLines="1"
-                android:textSize="15sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
+        <EditText
+            android:id="@+id/pushTitle"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
+            android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="vertical"
-            android:padding="10dp" >
+            android:hint="Title bar"
+            android:maxLength="20"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textSize="15sp" />
+    </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Message"
-                android:textColor="#5D5D5D"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="10dp" >
 
-            <EditText
-                android:id="@+id/pushMessage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:hint="Input the Message"
-                android:maxLines="7"
-                android:textSize="15sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="10dp" >
+            android:layout_height="wrap_content"
+            android:text="Message"
+            android:textColor="#5D5D5D"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:textColor="#ffffff"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <LinearLayout
+        <EditText
+            android:id="@+id/pushMessage"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
+            android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="10dp"
-            android:weightSum="2" >
+            android:hint="Input the Message"
+            android:maxLines="4"
+            android:maxLength="80"
+            android:textSize="15sp" />
+    </LinearLayout>
 
-            <Button
-                android:id="@+id/pushTrans"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="onClickButton"
-                android:text="Send Message"
-                android:textSize="15sp" />
-        </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="10dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="#ffffff"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:weightSum="2" >
+
+        <Button
+            android:id="@+id/pushTrans"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClickButton"
+            android:text="Send Message"
+            android:textSize="15sp" />
+    </LinearLayout>
 
 </LinearLayout>

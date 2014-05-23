@@ -63,8 +63,6 @@ public class ProfessorActivity extends PreferenceActivity implements OnClickList
 	     fragmentReplace(mCurrentFragmentIndex);
 	}
 	
-	
-	
 	public void setLayout(){
 		
 		general_btn = (Button)findViewById(R.id.general_btn);
