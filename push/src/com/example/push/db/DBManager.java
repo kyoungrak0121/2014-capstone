@@ -12,8 +12,18 @@ public class DBManager {
 	private static final String dbName = "APinfo.db";
 	private static final String table_stu = "student";
 	private static final String table_prof = "professor";
+	private static final String table_class = "class" ;
+	private static final String table_subject_time = "subject_time" ;
+	private static final String table_subject = "subject";
+	private static final String table_message = "message";
 	public static final int dbVersion = 1;
 
+	
+	/* 강좌 : class
+	   학생 : student 
+	   교수 : professor
+	   
+	*/
 	// DB관련 객체 선언
 	private OpenHelper opener; // DB opener
 	private SQLiteDatabase db; // DB controller
@@ -43,17 +53,55 @@ public class DBManager {
 			// String dropSql = "drop table if exists " + table_stu;
 			//db.execSQL(dropSql);
 
+			// 학생 테이블 
 			String create_stu = "create table " + table_stu + " ("
-					+ "id integer , " + "SSID text, "
-					+ "pwd text)";
+					+ "stu_id text , " 
+					+ "pwd text, "
+					+ "name text, "
+					+ "phone_num text," 
+					+ "reg_id text)";
 			arg0.execSQL(create_stu);
 			Toast.makeText(context, "student DB is opened", 0).show();
 			
+			// 교수 테이블
 			String create_prof = "create table " + table_prof + " ("
 					+ "prof_ID text, "
-					+ "porf_pwd text)";
+					+ "porf_pwd text,"
+					+ "subject_num text)";
 			arg0.execSQL(create_prof);
 			Toast.makeText(context, "professor DB is opened", 0).show();
+			
+			// 수강 학생 table 
+			String create_class = "create table " + table_class + " ("
+					+ "class_num text, "
+					+ "subject_num text)";
+			arg0.execSQL(create_class);
+			Toast.makeText(context, "class DB is opened", 0).show();
+
+			// 과목 table
+			String create_subject = "create table " + table_subject + " ("
+					+ "class_num text, "
+					+ "class_name text, "
+					+ "class_where text)";
+			arg0.execSQL(create_subject);
+			Toast.makeText(context, "subject DB is opened", 0).show();
+			
+			// 과목 table
+			String create_subject_time = "create table " + table_subject_time + " ("
+					+ "class_num text, "
+					+ "class_name text, "
+					+ "class_where text)";
+			arg0.execSQL(create_subject_time);
+			Toast.makeText(context, "subject_time DB is opened", 0).show();
+			
+			// message table
+			String create_message = "create table " + table_message + " ("
+					+ "class_num text, "
+					+ "class_name text, "
+					+ "class_where text)";
+			arg0.execSQL(create_message);
+			Toast.makeText(context, "message DB is opened", 0).show();
+			 
 		}
 
 		@Override
@@ -63,9 +111,9 @@ public class DBManager {
 	}
 
 	// 데이터 추가
-	public void insert_stu(int num,String id, String pwd) {
-		String sql = "insert into " + table_stu + " values("+num+",'" + id
-				+ "', '" + pwd + "');";
+	public void insert_stu(String id, String pwd,String name,String phone,String reg_id) {
+		String sql = "insert into " + table_stu + " values('"+id+"','" +pwd
+				+ "', '" + name + "', '" + phone + "', '" + reg_id + "');";
 		db.execSQL(sql);
 		Log.d("STUDENTS INSERT ", "completed");
 	}

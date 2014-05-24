@@ -26,6 +26,7 @@ public class MainActivity extends PreferenceActivity{
 	private Button login_btn;
 	private Intent intent;
 	private Switch switch_btn;
+	private String reg_id = "APA91bHAV3oobSzSbgP3KLO9Gsw3FYiTAzEAFohamqXlAEf3dVuuW3DGroO_bUoJKmS2wOGxoYfD7KuZQ2JrX3GO9nLVw9P67Q1mlMUkHSN_2XX2szBW2W_UKX02hF5BbSjSSzi4WzYi";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +34,9 @@ public class MainActivity extends PreferenceActivity{
 		setContentView(R.layout.layout_main);
 		
 		DBManager manager = new DBManager(this);
-		manager.insert_stu(5,"123", "123");
-		manager.insert_stu(6,"1111", "11123");
-		manager.insert_prof("123","111");
-		manager.insert_prof("111","122");
+		manager.insert_stu("60092385","1234","¹Ú¼¼Áø","01033413321",reg_id);
+		
+	
 		
 		globals = Globals.getInstance();
 		
