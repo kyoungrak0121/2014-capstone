@@ -1,6 +1,7 @@
 package com.example.push.db;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -65,8 +66,8 @@ public class DBManager {
 			
 			// 교수 테이블
 			String create_prof = "create table " + table_prof + " ("
-					+ "prof_ID text, "
-					+ "porf_pwd text,"
+					+ "prof_id text, "
+					+ "prof_pwd text,"
 					+ "subject_num text)";
 			arg0.execSQL(create_prof);
 			Toast.makeText(context, "professor DB is opened", 0).show();
@@ -119,15 +120,53 @@ public class DBManager {
 	}
 	
 	
-	public void insert_prof(String id,String pwd){
+	public void insert_prof(String id,String pwd,String subject_num){
 		String sql = "insert into " + table_prof + " values('" + id
-				+ "', '" + pwd + "');";
+				+ "', '" + pwd + "',+'" + subject_num
+				+ "');";
 		db.execSQL(sql);
 		Log.d("PROFESSORS INSERT ", "completed");
 	}
+	
+	public void select_stu(){
+		Cursor cursor = db.query(true,table_stu,new String[]{"stu_id","pwd","name","phone_num","reg_id"},
+				null,null,null,null,null,null);
+		
+		while(cursor.moveToNext()){
+			String id = cursor.getString(0);
+			String pwd = cursor.getString(1);
+			String name = cursor.getString(2);
+			String phone = cursor.getString(3);
+			
+			String total = "his name is" + name +" and phone number is " + phone;
+			Toast.makeText(context,total,0).show();
+		}
+	}
+		
+	public void select_prof(){
+		Cursor cursor = db.query(true,table_prof,new String[]{"prof_id","prof_pwd","subject_num"},
+				null,null,null,null,null,null);
+//		if (cursor ==null){
+//			Toast.makeText(context, "no user", 0).show();
+//		}
+//		else{
+			while(cursor.moveToNext()){
+			String id = cursor.getString(0);
+			String pwd = cursor.getString(1);
+			String subject_num = cursor.getString(2);
+			
+			String total = "his name is" + id +" and subject num is " + subject_num;
+			Toast.makeText(context,total,0).show();
+//		}
+		}
+	
+		
+	}
+	
+	
 
-//	public ArrayList<apinfo> selectAll() {
-//		String sql = "select * from " + tableName + ";";
+//	public Cursor select_stu() {
+//		String sql = "select * from " + table_stu+ ";";
 //		Cursor results = db.rawQuery(sql, null);
 //
 //		results.moveToFirst();
@@ -135,7 +174,7 @@ public class DBManager {
 //
 //		while (!results.isAfterLast()) {
 //			APinfo info = new APinfo(results.getInt(0), results.getString(1),
-//					results.getInt(2), results.getString(3));
+//				 	results.getInt(2), results.getString(3));
 //			infos.add(info);
 //			results.moveToNext();
 //		}

@@ -1,6 +1,7 @@
 package com.example.push;
 
 import com.example.push.R;
+import com.example.push.db.DBManager;
 import com.example.push.table.Globals;
 import com.google.android.gcm.GCMRegistrar;
 
@@ -21,6 +22,9 @@ public class SplashActivity extends PreferenceActivity {
 	//자신의 Project ID 를 넣어주세요
 	private static final String SENDER_ID = "858542600044";
 	
+	private String reg_id = "APA91bHAV3oobSzSbgP3KLO9Gsw3FYiTAzEAFohamqXlAEf3dVuuW3DGroO_bUoJKmS2wOGxoYfD7KuZQ2JrX3GO9nLVw9P67Q1mlMUkHSN_2XX2szBW2W_UKX02hF5BbSjSSzi4WzYi";
+
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -28,6 +32,12 @@ public class SplashActivity extends PreferenceActivity {
 		
 		globals = Globals.getInstance();	
 
+		DBManager manager = new DBManager(this);
+		manager.insert_stu("60092385","1234","박세진","01033413321",reg_id);
+		manager.insert_stu("60092385","123444444","박세진","01033413321",reg_id);
+		manager.insert_prof("123111", "2222","ta-111");
+		manager.select_stu();
+		manager.select_prof();
 		
 		initialize();
 	}
