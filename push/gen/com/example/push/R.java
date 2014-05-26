@@ -1080,7 +1080,9 @@ containing a value of this type.
         public static final int bg_day=0x7f020057;
         public static final int grideview_selector=0x7f020058;
         public static final int ic_launcher=0x7f020059;
-        public static final int logo=0x7f02005a;
+        public static final int icon=0x7f02005a;
+        public static final int logo=0x7f02005b;
+        public static final int splash=0x7f02005c;
     }
     public static final class id {
         public static final int aa=0x7f05005e;

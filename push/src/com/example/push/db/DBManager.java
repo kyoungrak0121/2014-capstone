@@ -134,6 +134,7 @@ public class DBManager {
 	public void insert_subject(String subject_num, String subject_name) {
 		String sql = "insert into " + table_subject + " values('" + subject_num
 				+ "', '" + subject_name + "');";
+		
 		db.execSQL(sql);
 
 		Log.d("insert_subject INSERT ", "completed");
@@ -182,6 +183,7 @@ public class DBManager {
 	public void insert_profClass(String prof_num, String subject_num) {
 		String sql = "insert into " + table_profClass + " values('" + prof_num
 				+ "', '" + subject_num + "');";
+		
 		db.execSQL(sql);
 
 		Log.d("insert_profClass ", "completed");
@@ -267,7 +269,7 @@ public class DBManager {
 		return pList;
 	}
 
-	public List<String> getRegList(String profId) {
+	public List<String> getRegList(String sub_num) {
 		List<String> regList = new ArrayList<String>();
 
 		/*
@@ -280,32 +282,23 @@ public class DBManager {
 
 		String sql = "select DISTINCT stu_reg_id "
 				+ "from "
-				+ table_prof
-				+ " p  inner join ("
-				+ table_profClass
-				+ " pc inner join ("
-				+ table_stClass
-				+ " sc inner join "
 				+ table_stu
-				+ " s on s.stu_num = sc.stu_num ) t on t.subject_num = pc.subject_num )"
-				+ " t2 on p.prof_num = t2.prof_num" + " where p.prof_num=?;";
-
+				+ " s  inner join "
+				+ table_stClass
+				+ " sc on s.stu_num = sc.stu_num "
+				+ " where sc.subject_num=?;";
+	
 		Cursor cursor = null;
 
 		try {
-			cursor = db.rawQuery(sql, new String[] { String.valueOf(profId) });
+			cursor = db.rawQuery(sql, new String[] { String.valueOf(sub_num) });
 			// do some work with the cursor here.
 
 			ArrayList<String> List = new ArrayList<String>(); // 검사하려하는 어레이리스트
 
 			while (cursor.moveToNext()) {
-				List.add(cursor.getString(0));
-			}
-
-			HashSet<String> hs = new HashSet<String>(List);
-			Iterator<String> it = hs.iterator();
-			while (it.hasNext()) {
-				regList.add(it.next());
+				regList.add(cursor.getString(0));
+				Log.w("REG NUMBER!!! ",""+cursor.getString(0));
 			}
 
 		} finally {
@@ -317,43 +310,31 @@ public class DBManager {
 		return regList;
 	}
 
-	public List<String> getPhoneList(String profId) {
+	public List<String> getPhoneList(String sub_num) {
 		List<String> phoneList = new ArrayList<String>();
 
 		String sql = "select DISTINCT stu_phone "
 				+ "from "
-				+ table_prof
-				+ " p  inner join ("
-				+ table_profClass
-				+ " pc inner join ("
-				+ table_stClass
-				+ " sc inner join "
 				+ table_stu
-				+ " s on s.stu_num = sc.stu_num ) t on t.subject_num = pc.subject_num )"
-				+ " t2 on p.prof_num = t2.prof_num"
-				+ " where p.prof_num=? and stu_reg_id =?;";
+				+ " s  inner join "
+				+ table_stClass
+				+ " sc on s.stu_num = sc.stu_num "
+				+ " where sc.subject_num=? and stu_reg_id =?;";
 
 		Cursor cursor = null;
 
 		try {
-			cursor = db.rawQuery(sql, new String[] { String.valueOf(profId),
+			cursor = db.rawQuery(sql, new String[] { String.valueOf(sub_num),
 					String.valueOf("") });
 			// do some work with the cursor here.
 
-			ArrayList<String> List = new ArrayList<String>(); // 검사하려하는 어레이리스트
-
+			
 			while (cursor.moveToNext()) {
-				List.add(cursor.getString(0));
+				phoneList.add(cursor.getString(0));
 				Log.w("PHONE NUMBER!!! ",""+cursor.getString(0));
 			}
-
-			HashSet<String> hs = new HashSet<String>(List);
-			Iterator<String> it = hs.iterator();
-			while (it.hasNext()) {
-				phoneList.add(it.next());
-			}
+			
 		} finally {
-			Log.w("PHONE NUMBER!!! ","error" );
 			// this gets called even if there is an exception somewhere above
 			if (cursor != null)
 				cursor.close();

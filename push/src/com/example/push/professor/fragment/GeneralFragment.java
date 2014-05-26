@@ -134,13 +134,9 @@ public class GeneralFragment extends SuperFragment implements OnClickListener {
 			Toast.makeText(getActivity().getApplicationContext(),
 					"제목과 내용을 모두 입력 해주세요.", Toast.LENGTH_LONG).show();
 		} else {
-
 			
-			setPushMessage("공지사항", pushTitle.getText().toString(), pushMessage.getText().toString());
-			setSMSMessage("공지사항", pushTitle.getText().toString(), pushMessage.getText().toString());
+			getSubjectListDialog("공지사항", pushTitle.getText().toString(), pushMessage.getText().toString());
 			
-			getSubjectListDialog();
-
 			init();
 		}
 	}

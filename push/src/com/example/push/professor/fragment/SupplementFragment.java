@@ -222,29 +222,8 @@ public class SupplementFragment extends Calender implements
 
 			if (selectCount > 0) {
 
-				// //////////////////////////////////
-				// /////id 나중에 DB로 변경!
-				// DB
-				setPushMessage("보강공지", "XX 강의 보강 공지", mSelectDayList,
-						sup_location + " 보강합니다.");
-				setSMSMessage("보강공지", "XX 강의 보강 공지", mSelectDayList,
-						sup_location + " 에서 보강합니다.");
-				
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						sendPushMessage();
-					}
-				}).start();
-
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						sendSMSMessage();
-					}
-				}).start();
+				getSubjectListDialog("보강공지", "", 
+						sup_location + " 보강합니다.",mSelectDayList);
 
 				init();
 

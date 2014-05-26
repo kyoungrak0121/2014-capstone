@@ -73,6 +73,27 @@ public class PreferenceActivity extends Activity{
         });
 	}
 	
+	public void firstExec(){
+		
+		SharedPreferences prefs = getSharedPreferences("first", Activity.MODE_PRIVATE);
+		SharedPreferences.Editor editor = prefs.edit();
+		
+		editor.putBoolean("first", Boolean.getBoolean("false"));
+		editor.commit();
+
+	}
+	
+	public boolean isFirst(){
+		SharedPreferences prefs = getSharedPreferences("first", Activity.MODE_PRIVATE);
+		
+		if(prefs.getBoolean("first", true)){
+			firstExec();
+			return true;
+		}
+		return false;
+	}
+	
+	
 	public boolean insert_login(String id, String pw){
 		try{
 			SharedPreferences prefs = getSharedPreferences("login", MODE_PRIVATE);

@@ -227,11 +227,14 @@ public class TaskFragment extends Calender implements OnItemClickListener,
 				// //////////////////////////////////
 				// /////id 나중에 DB로 변경!
 				// DB
-				setPushMessage("과제 공지", "XX 강의 과제 공지", mSelectDayList,
-						task_message);
+				/*
+				setPushMessage();
 				setSMSMessage("과제 공지", "XX 강의 과제 공지", mSelectDayList,
 						task_message);
+				*/
 
+				getSubjectListDialog("과제 공지", "", task_message,
+						mSelectDayList);
 				new Thread(new Runnable() {
 					@Override
 					public void run() {

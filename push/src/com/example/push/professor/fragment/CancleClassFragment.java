@@ -196,27 +196,14 @@ public class CancleClassFragment extends Calender  implements OnItemClickListene
 			if (selectCount > 0) {
 
 				// DB
-				
-				
-				
+				/*
 				setPushMessage("휴강공지", "XX 강의 휴강 공지", mSelectDayList,"휴강 합니다.");
 				setSMSMessage("휴강공지", "XX 강의 휴강 공지", mSelectDayList,"휴강 합니다.");
-
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						sendPushMessage();
-					}
-				}).start();
+				*/
 				
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						sendSMSMessage();
-					}
-				}).start();
+				getSubjectListDialog("휴강공지", "", "휴강 합니다." , mSelectDayList);
+				
+				
 			
 				init();
 				

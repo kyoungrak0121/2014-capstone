@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 
 public class SplashActivity extends PreferenceActivity {
 	
@@ -38,6 +40,24 @@ public class SplashActivity extends PreferenceActivity {
 
 		initialize();
 	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		 unbindDrawables(findViewById(R.id.container));
+	        System.gc();
+	};
+	 private void unbindDrawables(View view) {
+	        if (view.getBackground() != null) {
+	            view.getBackground().setCallback(null);
+	        }
+	        if (view instanceof ViewGroup) {
+	            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+	                unbindDrawables(((ViewGroup) view).getChildAt(i));
+	            }
+	            ((ViewGroup) view).removeAllViews();
+	        }
+	    }
 
 	protected void initialize() {
 		
@@ -49,7 +69,9 @@ public class SplashActivity extends PreferenceActivity {
 
 				setGCM();
 				
-				todoBeforeLaunch(); // °ª ³Ö±â  
+				if(isFirst()){
+					todoBeforeLaunch(); // °ª ³Ö±â  
+				}
 				getLaunchData(); // ÃÊ±âÈ­ 
 				
 				startActivity(new Intent(getApplicationContext(), MainActivity.class));
@@ -144,20 +166,20 @@ public class SplashActivity extends PreferenceActivity {
 		manager.insert_profClass("p6","1077");
 		manager.insert_profClass("p6","1078");
 		manager.insert_profClass("p20","1079");
-		manager.insert_profClass("p16","1497");
+		manager.insert_profClass("p17","1497");
 		manager.insert_profClass("p21","1498");
 		manager.insert_profClass("p21","1499");
 		manager.insert_profClass("p1","1065");
 		manager.insert_profClass("p1","1066");
-		manager.insert_profClass("p21","1070");
-		manager.insert_profClass("p21","1071");
+		manager.insert_profClass("p22","1070");
+		manager.insert_profClass("p22","1071");
 		manager.insert_profClass("p4","1072");
-		manager.insert_profClass("p11","1073");
-		manager.insert_profClass("p13","1074");
+		manager.insert_profClass("p12","1073");
+		manager.insert_profClass("p14","1074");
 		manager.insert_profClass("p9","1075");
-		manager.insert_profClass("p22","1080");
-		manager.insert_profClass("p22","1081");
-		manager.insert_profClass("p22","1082");
+		manager.insert_profClass("p23","1080");
+		manager.insert_profClass("p23","1081");
+		manager.insert_profClass("p23","1082");
 	}
 
 	private void setStClass(DBManager manager) {
@@ -167,7 +189,7 @@ public class SplashActivity extends PreferenceActivity {
 		//ÇýÀÎ
 		manager.insert_stClass("60112367", "1053");
 		manager.insert_stClass("60112367", "1071");
-		manager.insert_stClass("60112367", "1073");
+		manager.insert_stClass("60112367", "1073");// Ä¸½ºÅæs
 		
 		//°æ¶ô
 		manager.insert_stClass("60092437", "1073"); // Ä¸½ºÅæ
@@ -350,18 +372,21 @@ public class SplashActivity extends PreferenceActivity {
 		manager.insert_prof("p8", "8", "ÀåÈñÁ¤");
 		manager.insert_prof("p9", "9", "ÀÌ¸íÈ£");
 		manager.insert_prof("p10", "10", "±è»ó±Õ");
-		manager.insert_prof("p11", "11", "ÀåÇõ¼ö"); // Ä¸½ºÅæ1
-		manager.insert_prof("p12", "12", "¹Ú¿µ¹è");
-		manager.insert_prof("p13", "13", "ÀüÁ¾ÈÆ");
-		manager.insert_prof("p14", "14", "ÀÌ°æ¹Ì");
-		manager.insert_prof("p15", "15", "·ù¿¬½Â");
-		manager.insert_prof("p16", "16", "½Å¹ÎÈ£");
-		manager.insert_prof("p17", "17", "È«¼®¿ø");
-		manager.insert_prof("p18", "18", "¹ÚÇö¹Î");
-		manager.insert_prof("p19", "19", "±èÁøÈ«");
-		manager.insert_prof("p20", "20", "¹Ú½ÂÁø");
-		manager.insert_prof("p21", "21", "±èÀ¯°æ");
-		manager.insert_prof("p22", "22", "ÇÑ½ÂÃ¶");
+		manager.insert_prof("p11", "11", "±è»ó¿î"); // Ä¸½ºÅæ1
+		manager.insert_prof("p12", "12", "ÀåÇõ¼ö");
+		manager.insert_prof("p13", "13", "¹Ú¿µ¹è");
+		manager.insert_prof("p14", "14", "ÀüÁ¾ÈÆ");
+		manager.insert_prof("p15", "15", "ÀÌ°æ¹Ì");
+		manager.insert_prof("p16", "16", "·ù¿¬½Â");
+		manager.insert_prof("p17", "17", "½Å¹ÎÈ£");
+		manager.insert_prof("p18", "18", "È«¼®¿ø");
+		manager.insert_prof("p19", "19", "¹ÚÇö¹Î");
+		manager.insert_prof("p20", "20", "±èÁøÈ«");
+		manager.insert_prof("p21", "21", "¹Ú½ÂÁø");
+		manager.insert_prof("p22", "22", "±èÀ¯°æ");
+		manager.insert_prof("p23", "23", "ÇÑ½ÂÃ¶");
+		
+		
 		//manager.select_prof();
 	}
 
