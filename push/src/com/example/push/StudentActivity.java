@@ -20,7 +20,6 @@ public class StudentActivity extends PreferenceActivity{
 		setContentView(R.layout.layout_student);
 		setSlideHolder();
 			
-		
 		Context mContext = getApplicationContext();//view가 alert 이면 팝업실행 즉 버튼을 누르면 팝업창이 뜨는 조건
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
 		

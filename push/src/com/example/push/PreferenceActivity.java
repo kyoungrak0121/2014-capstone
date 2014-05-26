@@ -8,9 +8,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.example.push.R;
+import com.example.push.db.DBManager;
 import com.example.push.table.Person;
 import com.example.push.table.Professor;
 import com.example.push.table.Student;
+import com.example.push.table.Subject_Info;
 import com.example.push.widget.SlideHolder;
 
 import android.app.Activity;
@@ -31,11 +33,6 @@ import android.widget.Toast;
 
 
 public class PreferenceActivity extends Activity{
-
-	private final String size_student = "s_student";
-	private final String size_professor = "s_professor";
-	private final String login = "login";
-	private final String size_regId = "s_regId";
 	
 	private SlideHolder mSlideHolder;
 	private ListView listView;
@@ -46,6 +43,7 @@ public class PreferenceActivity extends Activity{
 	private boolean mPressFirstBackKey = false;      // Back의 상태값을 저장하기 위한 변수
 	private Timer timer;
 	
+	private DBManager db;
 	
 	public void setSlideHolder(){
 
@@ -67,26 +65,7 @@ public class PreferenceActivity extends Activity{
                 	startActivity(new Intent(getApplicationContext(),MainActivity.class));
                 	finish();
                 }else if(item.equals(SETTING[2])){
-                	/*
-                
-    				if(isChecked){
-    					
-    					GCMRegistrar.checkDevice(mContext);
-    					GCMRegistrar.checkManifest(mContext);
-    					if(GCMRegistrar.getRegistrationId(mContext).equals("")){
-    						GCMRegistrar.register(mContext, PROJECT_ID);
-    					}else{
-    					
-    						GCMRegistrar.unregister(mContext);
-    						GCMRegistrar.register(mContext, PROJECT_ID);
-    					}
-    				}
-    				
-    				else{
-    					
-    					GCMRegistrar.unregister(mContext);
-    				}
-    				*/
+                	
                 }
                             
                 Toast.makeText(getBaseContext(), item, Toast.LENGTH_LONG).show();
@@ -106,42 +85,7 @@ public class PreferenceActivity extends Activity{
 		}
 		return true;
 	}
-	
-	public boolean insert_student(String id, String pw){
-		int size = GetPrefInt(size_student);
-		
-		try{
-			SharedPreferences prefs = getSharedPreferences("student", Activity.MODE_PRIVATE);
-			SharedPreferences.Editor editor = prefs.edit();
-			editor.putString("id_" + size, id);
-			editor.putString("pw_" + size, pw);
-			editor.commit();
-		} catch(Exception e){
-			return false;
-		}
-		
-		SetPref(size_student, size+1);
-		return true;
-	}
-	
-	public boolean insert_professor(String id, String pw){
-		int size = GetPrefInt(size_professor);
-		
-		try{
-			SharedPreferences prefs = getSharedPreferences("professor", Activity.MODE_PRIVATE);
-			SharedPreferences.Editor editor = prefs.edit();
-			editor.putString("id_" + size, id);
-			editor.putString("pw_" + size, pw);
 
-			editor.commit();
-		} catch(Exception e){
-			return false;
-		}
-		
-		SetPref(size_professor, size+1);
-		return true;
-	}
-	
 	public boolean delete_login(){
 		
 		try{
@@ -159,65 +103,6 @@ public class PreferenceActivity extends Activity{
 		
 		return true;
 	}
-	
-	public boolean delete_student(String id){
-		
-		final int size = GetPrefInt(size_student);
-		try{
-			SharedPreferences prefs = getSharedPreferences("student",
-					Activity.MODE_PRIVATE);
-			SharedPreferences.Editor editor = prefs.edit();
-			
-			for( int i = 0; i < size; i++ ){
-				String src = prefs.getString("id_" + i, null);
-				if( src.equals(id) == true ){
-					editor.remove("id_" + i);
-					editor.remove("pw_" + i);
-					
-					for( int j = i+1; j <= size; j++ ){
-						editor.putString("id_" + (j-1), prefs.getString("id_"+j, null));
-						editor.putString("pw_" + (j-1), prefs.getString("pw_"+j, null));
-					}
-				}
-			}
-			editor.commit();
-		} catch(Exception e){
-			return false;
-		}
-		
-		SetPref(size_student, size-1);
-		return true;
-	}
-	
-	public boolean delete_professor(String id){
-		final int size = GetPrefInt(size_professor);
-		
-		try{
-			SharedPreferences prefs = getSharedPreferences("professor", Activity.MODE_PRIVATE);
-			SharedPreferences.Editor editor = prefs.edit();
-			
-			for( int i = 0; i < size; i++ ){
-				String src = prefs.getString("id_" + i, null);
-				if( src.equals(id) == true ){
-					editor.remove("id_" + i);
-					editor.remove("pw_" + i);
-					
-					for( int j = i+1; j <= size; j++ ){
-						editor.putString("id_" + (j-1), prefs.getString("id_" + j, null));
-						editor.putString("pw_" + (j-1), prefs.getString("pw_" + j, null));
-					}
-				}
-			}
-			editor.commit();
-		} catch(Exception e){
-			return false;
-		}
-		
-
-		SetPref(size_student, size-1);
-		return true;
-	}
-	
 	public boolean isCheck_regId(){
 		
 		SharedPreferences prefs = getSharedPreferences("regId", Activity.MODE_PRIVATE);
@@ -266,74 +151,21 @@ public class PreferenceActivity extends Activity{
 	}
 	
 	public Map<String,Student> read_student(){
-		Map<String,Student> sList = new HashMap<String,Student>();
+		//Map<String,Student> sList = new HashMap<String,Student>();
 		
-		int size = GetPrefInt(size_student);
+		db = new DBManager(getApplication());
 		
-		SharedPreferences prefs = getSharedPreferences("student", Activity.MODE_PRIVATE);
-		
-		for( int i = 0; i < size; i++ ){
-			
-			String id = prefs.getString("id_" + i, null);		
-			String pw = prefs.getString("pw_" + i, null);
-	
-			sList.put(id,new Student(id,pw));
-		}
-		
-		return sList;
+		return db.select_stu();
 	}
 	
 	public  Map<String,Professor> read_professor(){
-		 Map<String,Professor> pList = new HashMap<String,Professor>();
 		
-		int size = GetPrefInt(size_professor);
-		
-		SharedPreferences prefs = getSharedPreferences("professor", Activity.MODE_PRIVATE);
-		
-		for( int i = 0; i < size; i++ ){
-			String id = prefs.getString("id_" + i, null);
-			String pw = prefs.getString("pw_" + i, null);
+		db = new DBManager(getApplication());
 
-			pList.put(id,new Professor(id, pw));
-		}
-		return pList;
-	}
-
-	
-	public void SetPref(String key, int value) {
-		SharedPreferences prefs = getSharedPreferences("noname",
-				Activity.MODE_PRIVATE);
-		SharedPreferences.Editor editor = prefs.edit();
-		editor.putInt(key, value);
-		editor.commit();
-	}
-
-	public int GetPrefInt(String key) {
-		SharedPreferences prefs = getSharedPreferences("noname",
-				Activity.MODE_PRIVATE);
-		return prefs.getInt(key, 0);
-	}
-
-	public void DeletePref(String key) {
-		SharedPreferences prefs = getSharedPreferences("noname",
-				Activity.MODE_PRIVATE);
-		SharedPreferences.Editor editor = prefs.edit();
-		editor.remove(key);
-		editor.commit();
-	}
-	
-	public boolean hideSoftInputWindow(View edit_view, boolean bState) {
-
-		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-
-		if (bState)
-			return imm.showSoftInput(edit_view, 0);
-		else
-			return imm.hideSoftInputFromWindow(edit_view.getWindowToken(),
-					InputMethodManager.HIDE_NOT_ALWAYS);
+		return db.select_prof();
 
 	}
-	
+
 	public void onBackPressed() {
 
 		if (mPressFirstBackKey == false) { // Back 키가 첫번째로 눌린 경우

@@ -3,6 +3,7 @@ package com.example.push.professor.fragment;
 import com.example.push.R;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -30,7 +31,6 @@ public class GeneralFragment extends SuperFragment implements OnClickListener {
 	private TextView inputMessage;
 	private Button pushTrans;
 	View v;
-	String regId;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -105,12 +105,6 @@ public class GeneralFragment extends SuperFragment implements OnClickListener {
 	void init() {
 		pushTitle.setText("");
 		pushMessage.setText("");
-
-		// //////////////////////////////////
-		// /////id 나중에 DB로 변경!!
-		SharedPreferences prefs = this.getActivity().getSharedPreferences(
-				"regId", Activity.MODE_PRIVATE);
-		regId = prefs.getString("regId", null);
 	}
 
 	void setLayout(View v) {
@@ -141,26 +135,12 @@ public class GeneralFragment extends SuperFragment implements OnClickListener {
 					"제목과 내용을 모두 입력 해주세요.", Toast.LENGTH_LONG).show();
 		} else {
 
+			
 			setPushMessage("공지사항", pushTitle.getText().toString(), pushMessage.getText().toString());
 			setSMSMessage("공지사항", pushTitle.getText().toString(), pushMessage.getText().toString());
+			
+			getSubjectListDialog();
 
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					// TODO Auto-generated method stub
-					sendPushMessage();
-					
-				}
-			}).start();
-			
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					// TODO Auto-generated method stub
-					sendSMSMessage("01092886788");
-				}
-			}).start();
-			
 			init();
 		}
 	}

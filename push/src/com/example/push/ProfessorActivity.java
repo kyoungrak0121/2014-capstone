@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.push.R;
+import com.example.push.db.DBManager;
 import com.example.push.professor.fragment.CancleClassFragment;
 import com.example.push.professor.fragment.GeneralFragment;
 import com.example.push.professor.fragment.SupplementFragment;
@@ -47,6 +48,8 @@ public class ProfessorActivity extends PreferenceActivity implements OnClickList
 	public final static int FRAGMENT_SUPPLEMENT = 2;
 	public final static int FRAGMENT_TASK = 3;	
 	
+	private String prof_id;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 	
@@ -55,12 +58,17 @@ public class ProfessorActivity extends PreferenceActivity implements OnClickList
 
 		globals = Globals.getInstance();
 		
+		prof_id = getIntent().getStringExtra("id");
+		
+		
 		setSlideHolder();
 		setLayout();
 		
-		 mCurrentFragmentIndex = FRAGMENT_GENERAL;
-		 
-	     fragmentReplace(mCurrentFragmentIndex);
+		setSublist();
+		
+		mCurrentFragmentIndex = FRAGMENT_GENERAL;
+
+		fragmentReplace(mCurrentFragmentIndex);
 	}
 	
 	public void setLayout(){
@@ -77,6 +85,11 @@ public class ProfessorActivity extends PreferenceActivity implements OnClickList
 		task_btn.setOnClickListener(this);		
 	}
 	
+	private void setSublist(){
+		DBManager db = new DBManager(getApplication());
+		globals.getPerson().getpList().get(prof_id).setSubjectList(db.setProfSubList(prof_id));
+		
+	}
 	
 	@Override
 	public void onClick(View v) {
@@ -144,6 +157,9 @@ public class ProfessorActivity extends PreferenceActivity implements OnClickList
 	            break;
 	        }
 	      
+	        Bundle bundle = new Bundle();
+	        bundle.putString("id",prof_id);
+	        newFragment.setArguments(bundle);
 	        return newFragment;
 	    }
 	

@@ -7,17 +7,22 @@ import java.util.List;
 import java.util.Map;
 
 import com.example.push.R;
+import com.example.push.db.DBManager;
 import com.example.push.table.Globals;
+import com.example.push.table.Professor;
+import com.example.push.table.Subject_Info;
 import com.google.android.gcm.server.Message;
 import com.google.android.gcm.server.MulticastResult;
 import com.google.android.gcm.server.Result;
 import com.google.android.gcm.server.Sender;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -38,11 +43,6 @@ public class SuperFragment extends Fragment {
 	private String smsMsg;
 	private String pushMsg;
 
-	private Globals globals;
-
-	// private static final String SELECT_PAGE =
-	// "http:// (server_address!!!) /select_registration.php";
-	// private static String JSON = null;
 	private static String API_KEY = "AIzaSyC0IIOyF2A2Sg_Sto0BmF6-QQRn4qM0sq8";
 	private static String COLLAPSE_KEY = String
 			.valueOf(Math.random() % 100 + 1);
@@ -51,6 +51,12 @@ public class SuperFragment extends Fragment {
 	private static int RETRY = 3;
 
 	List<String> regId;
+	List<String> phone;
+	
+	private String profId ; 
+	private DBManager db ;
+	
+	protected String sub_name = "";
 
 	public void setPushMessage(String kicker, String title, String message) {
 
@@ -63,7 +69,7 @@ public class SuperFragment extends Fragment {
 
 	public void setSMSMessage(String kicker, String title, String message) {
 		smsMsg = "";
-		smsMsg = "" + kicker + "\n" + "제목 : " + title + "\n" + "내용 : " + message;
+		smsMsg = "" + kicker + "\n" + "제목  " + title + "\n" + "내용 \n" + sub_name + "\n" + message;
 	}
 
 	public void setPushMessage(String kicker, String title,
@@ -112,29 +118,29 @@ public class SuperFragment extends Fragment {
 	}
 
 	public void setPushList() {
-
-		regId = new ArrayList();
-
-		SharedPreferences prefs = this.getActivity().getSharedPreferences(
-				"regId", Activity.MODE_PRIVATE);
-		// 박세진 id
-		regId.add("APA91bHAV3oobSzSbgP3KLO9Gsw3FYiTAzEAFohamqXlAEf3dVuuW3DGroO_bUoJKmS2wOGxoYfD7KuZQ2JrX3GO9nLVw9P67Q1mlMUkHSN_2XX2szBW2W_UKX02hF5BbSjSSzi4WzYi");
-		// SharedPreferences에 저장된 아이디
-		regId.add(prefs.getString("regId", null));
+		
+		regId = null;
+		profId = getArguments().getString("id"); 
+		
+		db = new DBManager(getActivity());
+		
+		regId = db.getRegList(profId);
 
 	}
 	
 	public void sendPushMessage() {
 
 		setPushList();
+		
 		try {
 			Log.w(TAG, "" + gcmMessage);
 			Log.w(TAG, "" + regId);
 			Log.w(TAG, "" + RETRY);
 
-			// test 내 아이디
-			gcmResult = gcmSender.send(gcmMessage, regId, RETRY);
-
+			if(!regId.isEmpty()){
+				gcmResult = gcmSender.send(gcmMessage, regId, RETRY);
+			}
+			
 			Log.w(TAG, "success " + gcmResult.getSuccess());
 		} catch (IOException e) {
 			Log.w(TAG, "IOException " + e.getMessage());
@@ -147,6 +153,25 @@ public class SuperFragment extends Fragment {
 	 * @param phoneNumber
 	 * @param message
 	 */
+	
+	public void setPhoneList() {
+		profId = null;
+		profId = getArguments().getString("id"); 
+		
+		db = new DBManager(getActivity());
+		
+		phone = db.getPhoneList(profId);
+	}
+	
+	protected void sendSMSMessage(){
+	//	phone 
+		setPhoneList();
+		if(!phone.isEmpty()){
+			for(String phoneNumber : phone){
+				sendSMSMessage(phoneNumber);
+			}
+		}
+	}
 	protected void sendSMSMessage(String phoneNumber) {
 
 		String SENT = "SMS_SENT";
@@ -167,23 +192,23 @@ public class SuperFragment extends Fragment {
 			public void onReceive(Context context, Intent intent) {
 				switch (getResultCode()) {
 				case Activity.RESULT_OK:
-					Toast.makeText(getActivity(), "SMS sent",
+					Toast.makeText(context, "SMS sent",
 							Toast.LENGTH_SHORT).show();
 					break;
 				case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-					Toast.makeText(getActivity(), "Generic failure",
+					Toast.makeText(context, "Generic failure",
 							Toast.LENGTH_SHORT).show();
 					break;
 				case SmsManager.RESULT_ERROR_NO_SERVICE:
-					Toast.makeText(getActivity(), "No service",
+					Toast.makeText(context, "No service",
 							Toast.LENGTH_SHORT).show();
 					break;
 				case SmsManager.RESULT_ERROR_NULL_PDU:
-					Toast.makeText(getActivity(), "Null PDU",
+					Toast.makeText(context, "Null PDU",
 							Toast.LENGTH_SHORT).show();
 					break;
 				case SmsManager.RESULT_ERROR_RADIO_OFF:
-					Toast.makeText(getActivity(), "Radio off",
+					Toast.makeText(context, "Radio off",
 							Toast.LENGTH_SHORT).show();
 					break;
 				}
@@ -197,11 +222,11 @@ public class SuperFragment extends Fragment {
 			public void onReceive(Context context, Intent intent) {
 				switch (getResultCode()) {
 				case Activity.RESULT_OK:
-					Toast.makeText(getActivity(), "SMS delivered",
+					Toast.makeText(context, "SMS delivered",
 							Toast.LENGTH_SHORT).show();
 					break;
 				case Activity.RESULT_CANCELED:
-					Toast.makeText(getActivity(), "SMS not delivered",
+					Toast.makeText(context, "SMS not delivered",
 							Toast.LENGTH_SHORT).show();
 					break;
 				}
@@ -212,5 +237,81 @@ public class SuperFragment extends Fragment {
 		SmsManager sms = SmsManager.getDefault();
 		// sms를 보낸다.
 		sms.sendTextMessage(phoneNumber, null, smsMsg, sentPI, deliveredPI);
+	}
+	
+	protected void getSubjectListDialog() {
+		
+		
+		List <String >list = getList();
+		
+		
+		final String[] items  =  list.toArray(new String[list.size()]);
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setTitle("강좌 List");
+		//builder.setIcon(.drawable.icon);
+		builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+		    public void onClick(DialogInterface dialog, int item) {
+
+				sub_name =  items[item];
+		  
+		    	Toast.makeText(getActivity(), items[item], Toast.LENGTH_SHORT).show();
+		    }
+		});
+
+		builder.setPositiveButton("설정",
+		 new DialogInterface.OnClickListener() {
+		  public void onClick(DialogInterface dialog, int id) {
+			  
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						sendPushMessage();
+					}
+				}).start();
+				
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						sendSMSMessage();
+					}
+				}).start();
+			 	
+		  }
+		 });
+		builder.setNegativeButton("취소",
+		 new DialogInterface.OnClickListener() {
+		  public void onClick(DialogInterface dialog, int id) {
+		  
+			  Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
+			 
+		  }
+		 });
+		AlertDialog alert = builder.create();
+		alert.show();
+		
+	}
+	
+	private List<String> getList() {
+		// TODO Auto-generated method stub
+		Globals g = Globals.getInstance();
+		List<String> list = new ArrayList<String>();
+		
+		profId = getArguments().getString("id");
+		Professor p = g.getPerson().getpList().get(profId);
+		
+		for(String key : p.getSubjectList().keySet()){
+			list.add(""+ p.getSubjectList().get(key).getName() +" ( " + key + " ) " +"\n 시간 : " + p.getSubjectList().get(key).getDay()+" "+p.getSubjectList().get(key).getPeriod());
+		}
+		return list;
+	}
+
+	protected Map<String,Subject_Info> getSubjectList(String profNum){
+		
+		db = new DBManager(getActivity());
+		return db.setProfSubList(profNum);
+		
 	}
 }

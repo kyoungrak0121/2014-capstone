@@ -244,7 +244,7 @@ public class TaskFragment extends Calender implements OnItemClickListener,
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
-						sendSMSMessage("01092886788");
+						sendSMSMessage();
 					}
 				}).start();
 

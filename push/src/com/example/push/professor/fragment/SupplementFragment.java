@@ -200,7 +200,6 @@ public class SupplementFragment extends Calender implements
 				inputMessage.setTextColor(Color.parseColor("#5D5D5D"));
 				inputTime.setTextColor(Color.parseColor("#5D5D5D"));
 			}
-		
 			
 			showSelectList();
 		}
@@ -230,7 +229,7 @@ public class SupplementFragment extends Calender implements
 						sup_location + " 보강합니다.");
 				setSMSMessage("보강공지", "XX 강의 보강 공지", mSelectDayList,
 						sup_location + " 에서 보강합니다.");
-
+				
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
@@ -243,7 +242,7 @@ public class SupplementFragment extends Calender implements
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
-						sendSMSMessage("01092886788");
+						sendSMSMessage();
 					}
 				}).start();
 
@@ -277,7 +276,6 @@ public class SupplementFragment extends Calender implements
 		mSelectDayList.get(month).put(Integer.parseInt(day.getDay()),
 				day.getDay());
 		Log.w("Day : ", "" + day.getDay());
-
 		selectCount++;
 
 	}
@@ -310,7 +308,9 @@ public class SupplementFragment extends Calender implements
 						// TODO Auto-generated method stub
 
 						insertDate(parent, month, day, v);
+						
 						v.setBackgroundColor(Color.parseColor("#F08080"));
+						
 						inputDate.setTextColor(Color.parseColor("#F08080"));
 						inputTime.setTextColor(Color.parseColor("#F08080"));
 
@@ -338,7 +338,7 @@ public class SupplementFragment extends Calender implements
 
 			@Override
 			public void onClick(View v) {
-
+				sup_location = "";
 				sup_location += tv.getText().toString();
 				inputMessage.setTextColor(Color.parseColor("#F08080"));
 				showSelectList();
@@ -352,7 +352,6 @@ public class SupplementFragment extends Calender implements
 			public void onClick(View v) {
 
 				showSelectList();
-				sup_location = "";
 				dialog.dismiss();
 			}
 		});

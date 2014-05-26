@@ -35,12 +35,10 @@ public class MainActivity extends PreferenceActivity{
 		
 	
 		setSlideHolder();
-
 		
 		globals = Globals.getInstance();
 		
 		setLayout();
-				
 
 		switch_btn = (Switch) findViewById(R.id.switch_btn);
 
@@ -106,6 +104,9 @@ public class MainActivity extends PreferenceActivity{
 						&& sList.get(id).getPw().equals(pw)) {
 					intent = new Intent(getApplicationContext(),
 							StudentActivity.class);
+					// 다음 엑티비티에 id 값 넘기기
+					intent.putExtra("id", id);
+					
 					return true;
 				}
 			}
@@ -114,6 +115,9 @@ public class MainActivity extends PreferenceActivity{
 						&& pList.get(id).getPw().equals(pw)) {
 					intent = new Intent(getApplicationContext(),
 							ProfessorActivity.class);
+					// 다음 엑티비티에 id 값 넘기기
+					intent.putExtra("id", id);
+					
 					return true;
 				}
 			}
