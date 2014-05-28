@@ -7,17 +7,94 @@
     tools:context=".ProfessorActivity" >
 
     <LinearLayout
-        android:layout_width="250dp"
+        android:layout_width="200dp"
         android:layout_height="match_parent"
-        android:background="#F5F5F5"
+        android:background="#ADD8E6"
         android:baselineAligned="false"
+        android:gravity="center_horizontal"
         android:orientation="vertical" >
 
-        <ListView
-            android:id="@+id/elv_list"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:groupIndicator="@null" />
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="20dp" >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:src="@drawable/icon" 
+                android:scaleType="fitXY"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/slide_aboutbtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+            
+            <ImageView
+                
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/info" />
+
+            <TextView
+                android:id="@+id/slide_about"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="About"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="15dp" 
+                android:padding="2dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/slide_settingbtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+
+            
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/setting" />
+
+            <TextView
+                android:id="@+id/slide_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Setting"
+                android:textAppearance="?android:attr/textAppearanceMedium" 
+                android:textSize="15dp" 
+                android:padding="2dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/slide_loginbtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+
+            <ImageView
+                
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/login" />
+            <TextView
+                android:id="@+id/slide_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Login"
+                android:textAppearance="?android:attr/textAppearanceMedium" 
+                android:textSize="15dp" 
+                android:padding="2dp"/>
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -51,12 +128,14 @@
                         android:layout_height="wrap_content"
                         android:text="일반 공지"
                         android:textSize="12sp" />
-                     <Button
+
+                    <Button
                         android:id="@+id/task_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="과제 공지"
                         android:textSize="12sp" />
+
                     <Button
                         android:id="@+id/cancel_a_class_btn"
                         android:layout_width="wrap_content"
@@ -70,8 +149,6 @@
                         android:layout_height="wrap_content"
                         android:text="보강 공지"
                         android:textSize="12sp" />
-
-                   
                 </TableRow>
             </TableLayout>
         </LinearLayout>
@@ -103,7 +180,6 @@
             android:layout_margin="25dp"
             android:layout_weight="1" >
         </FrameLayout>
-        
     </LinearLayout>
 
 </com.example.push.widget.SlideHolder>

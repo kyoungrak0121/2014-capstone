@@ -1,8 +1,6 @@
 package com.example.push;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -12,21 +10,18 @@ import com.example.push.db.DBManager;
 import com.example.push.table.Person;
 import com.example.push.table.Professor;
 import com.example.push.table.Student;
-import com.example.push.table.Subject_Info;
 import com.example.push.widget.SlideHolder;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
-import android.view.KeyEvent;
+import android.media.Image;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,11 +30,11 @@ import android.widget.Toast;
 public class PreferenceActivity extends Activity{
 	
 	private SlideHolder mSlideHolder;
-	private ListView listView;
-	
-	
-	static final String[] SETTING = new String[] {"setting", "Logout","push setting"};
-	
+	private LinearLayout slideAboutBtn;
+	private LinearLayout slideSettingBtn;
+	private LinearLayout slideLoginBtn;
+	private TextView slideLogin;
+
 	private boolean mPressFirstBackKey = false;      // Back의 상태값을 저장하기 위한 변수
 	private Timer timer;
 	
@@ -49,30 +44,53 @@ public class PreferenceActivity extends Activity{
 
 		mSlideHolder = (SlideHolder) findViewById(R.id.slideHolder);
 	    mSlideHolder.setAllowInterceptTouch(false);
-		
-	    listView = (ListView)findViewById(R.id.elv_list);
-	    listView.setAdapter(new ArrayAdapter<String>(this,R.layout.list_item,SETTING));
-	    
-	    listView.setOnItemClickListener(new ListView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position,
-                    long id) {
-                
-                String item = ((TextView)view).getText().toString();
-                
-                if(item.equals(SETTING[1])){
-                	delete_login();
-                	startActivity(new Intent(getApplicationContext(),MainActivity.class));
-                	finish();
-                }else if(item.equals(SETTING[2])){
-                	
-                }
-                            
-                Toast.makeText(getBaseContext(), item, Toast.LENGTH_LONG).show();
-            }
-        });
+	    setLayout();
 	}
 	
+	private void setLayout() {
+		// TODO Auto-generated method stub
+		
+		slideAboutBtn = (LinearLayout)findViewById(R.id.slide_aboutbtn);
+		slideSettingBtn = (LinearLayout)findViewById(R.id.slide_settingbtn);
+		slideLoginBtn =  (LinearLayout)findViewById(R.id.slide_loginbtn);
+		slideLogin =  (TextView)findViewById(R.id.slide_login);
+		
+		slideAboutBtn.setClickable(true); 
+		slideLoginBtn.setClickable(true); 
+		slideSettingBtn.setClickable(true); 
+		
+		slideAboutBtn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Toast.makeText(getApplication(), "About btn", Toast.LENGTH_SHORT).show();
+			}
+		});
+		
+		slideSettingBtn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Toast.makeText(getApplication(), "Setting btn", Toast.LENGTH_SHORT).show();
+			}
+		});
+		slideLoginBtn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if(isCheck_login()){
+					slideLogin.setText("Login");
+					delete_login();
+					startActivity(new Intent(getApplicationContext(),MainActivity.class));   	
+			    	finish();
+				}
+			
+			}
+		});
+		
+		
+	}
+
 	public void firstExec(){
 		
 		SharedPreferences prefs = getSharedPreferences("first", Activity.MODE_PRIVATE);
@@ -211,6 +229,11 @@ public class PreferenceActivity extends Activity{
 		} else
 			super.onBackPressed();
 
+	}
+	
+	
+	public void setLoginText(){
+		slideLogin.setText("Logout");
 	}
 	
 }

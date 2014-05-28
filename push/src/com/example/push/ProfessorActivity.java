@@ -65,6 +65,7 @@ public class ProfessorActivity extends PreferenceActivity implements OnClickList
 		setLayout();
 		
 		setSublist();
+		setLoginText();
 		
 		mCurrentFragmentIndex = FRAGMENT_GENERAL;
 

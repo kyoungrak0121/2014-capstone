@@ -97,7 +97,6 @@ public class TaskFragment extends Calender implements OnItemClickListener,
 		inputTime.setTextColor(Color.parseColor("#5D5D5D"));
 
 		setCalender();
-
 	}
 
 	void setCalender() {
