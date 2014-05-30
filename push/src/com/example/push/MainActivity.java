@@ -18,7 +18,7 @@ import com.example.push.table.Person;
 import com.example.push.table.Professor;
 import com.example.push.table.Student;
 
-public class MainActivity extends PreferenceActivity{
+public class MainActivity extends SuperActivity{
 
 	private Globals globals;
 	private EditText login_id;

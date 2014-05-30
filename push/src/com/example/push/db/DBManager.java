@@ -336,6 +336,7 @@ public class DBManager {
 			
 		} finally {
 			// this gets called even if there is an exception somewhere above
+			
 			if (cursor != null)
 				cursor.close();
 		}

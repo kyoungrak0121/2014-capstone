@@ -30,7 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class ProfessorActivity extends PreferenceActivity implements OnClickListener {
+public class ProfessorActivity extends SuperActivity implements OnClickListener {
 
 	final String TAG = "ProfessorActivity";
 	 
@@ -147,7 +147,7 @@ public class ProfessorActivity extends PreferenceActivity implements OnClickList
 	            break;
 	        case FRAGMENT_SUPPLEMENT:
 	        	notify.setText("보강 공지");
-	           newFragment = new SupplementFragment();
+	        	newFragment = new SupplementFragment();
 	            break;
 	        case FRAGMENT_TASK:
 	        	notify.setText("과제 공지");

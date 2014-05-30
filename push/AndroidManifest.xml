@@ -31,6 +31,7 @@
 	<uses-permission android:name="android.permission.RECEIVE_SMS" />    
 	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
 	
+	
 	<supports-screens android:largeScreens="true" android:anyDensity="true"/>
   
 	<application
@@ -51,30 +52,21 @@
         <activity
             android:name="com.example.push.MainActivity"
             android:label="@string/app_name" 
-            android:theme="@android:style/Theme.Light.NoTitleBar">
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar">
         </activity>
         <activity
             android:name="com.example.push.ProfessorActivity"
             android:label="@string/title_activity_professor"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
         <activity
-            android:name="com.example.push.PreferenceActivity"
-            android:label="@string/title_activity_professor" >
+            android:name="com.example.push.SuperActivity"
+            android:label="@string/title_activity_professor">
         </activity>
         <activity
             android:name="com.example.push.StudentActivity"
             android:label="@string/title_activity_student" 
-            android:theme="@android:style/Theme.Light.NoTitleBar">
-        </activity>
-        
-        <activity
-            android:name="com.example.push.professor.fragment.CancleClassFragment"
-            android:label="@string/title_activity_cancle_class_fragment" >
-        </activity>
-        <activity
-            android:name="com.example.push.adapter.CalendarAdapter"
-            android:label="@string/title_activity_calendar_adapter" >
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar">
         </activity>
     
          <!-- GCM -->
@@ -91,7 +83,6 @@
 
         <service android:name="com.example.push.GCMIntentService" >
         </service>
-    
     
     </application>
 

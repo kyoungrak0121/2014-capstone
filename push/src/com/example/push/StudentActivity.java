@@ -13,12 +13,13 @@ import android.widget.Button;
 
 
 
-public class StudentActivity extends PreferenceActivity{
+public class StudentActivity extends SuperActivity{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_student);
 		setSlideHolder();
+		setLoginText();
 			
 		Context mContext = getApplicationContext();//view가 alert 이면 팝업실행 즉 버튼을 누르면 팝업창이 뜨는 조건
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);

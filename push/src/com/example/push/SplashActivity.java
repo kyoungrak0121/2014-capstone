@@ -16,7 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class SplashActivity extends PreferenceActivity {
+public class SplashActivity extends SuperActivity {
 	
 	Globals globals ;
 
@@ -395,13 +395,16 @@ public class SplashActivity extends PreferenceActivity {
 		
 		//insert_stu(String id, String pwd,String name,String phone,String reg_id)
 		
-		manager.insert_stu("60092385","1234","박세진","01033413321",reg_id);
-		manager.insert_stu("60112367","1234","서혜인","01043080309",reg2_id);
+	//	manager.insert_stu("60092385","1234","박세진","01033413321",reg_id);
+		
+		//manager.insert_stu("60112367","1234","서혜인","01043080309",reg2_id);
+	//		manager.insert_stu("60112367","1234","서혜인","01043080309","");
+		
 		manager.insert_stu("60092437","1234","정경락","01092886788",reg3_id);
 		
 		//testId
 		manager.insert_stu("60090001","1234","홍길동","01092886788","");
-		//manager.select_stu();
+		
 	}
 
 	private void getLaunchData(){

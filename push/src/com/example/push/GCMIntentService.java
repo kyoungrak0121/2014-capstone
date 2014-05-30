@@ -10,7 +10,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.util.Log;
+import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.google.android.gcm.GCMBaseIntentService;
@@ -82,30 +85,32 @@ public class GCMIntentService extends GCMBaseIntentService {
 		String title = intent.getStringExtra("title");
 		String msg = intent.getStringExtra("msg");
 		String ticker = intent.getStringExtra("ticker");
+
+ 		Log.w("show gcm message","title : " + title);
+ 		Log.w("show gcm message","msg : " + msg);
+ 		Log.w("show gcm message","ticker :" + ticker);
 		
 		NotificationManager notificationManager = (NotificationManager)context.getSystemService(Activity.NOTIFICATION_SERVICE);
 		
-//		해당 어플을 실행하는 이벤트를 하고싶을 때 아래 주석을 풀어주세요
+		Notification notification = new Notification(R.drawable.logo, ticker, System.currentTimeMillis());
+	    notification.flags |= Notification.FLAG_AUTO_CANCEL;
+	    
+	    //해당 어플을 실행하는 이벤트를 하고싶을 때 아래 주석을 풀어주세요
 		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, 
 				new Intent(context, SplashActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK), 0);
-//		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, new Intent(), 0);
 		
-		Notification notification = new Notification();
-		notification.icon = R.drawable.ic_launcher;
-		notification.tickerText = ticker;
-		notification.when = System.currentTimeMillis();
+		PowerManager pm = (PowerManager) context
+				.getSystemService(Context.POWER_SERVICE);
+		WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK
+				| PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
+		wl.acquire(15000);
+		
+
 		notification.vibrate = new long[] { 500, 100, 500, 100 };
 		notification.sound = Uri.parse("/system/media/audio/notifications/20_Cloud.ogg");
 		notification.flags = Notification.FLAG_AUTO_CANCEL;
-		notification.setLatestEventInfo(context, title, msg, pendingIntent);
-		
+				
+		notification.setLatestEventInfo(context,title, msg, pendingIntent);
 		notificationManager.notify(0, notification);
 	}
-	
-	/*
-	public void insertRegistrationID(String id){
-		httpConnect = new GCMHttpConnect(INSERT_PAGE + "?regID=" + id, httpRequest);
-		httpConnect.start();
-	}
-	*/
 }
