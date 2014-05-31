@@ -10,7 +10,7 @@
    <LinearLayout
         android:layout_width="200dp"
         android:layout_height="match_parent"
-        android:background="#ADD8E6"
+        android:background="@color/slide_background"
         android:baselineAligned="false"
         android:gravity="center_horizontal"
         android:orientation="vertical" >
@@ -34,6 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
+            android:background="@drawable/button_style"
             android:orientation="vertical" >
             
             <ImageView
@@ -57,8 +58,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
+            android:background="@drawable/button_style"
             android:orientation="vertical" >
-
             
             <ImageView
                 android:layout_width="80dp"
@@ -80,6 +81,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
+            android:background="@drawable/button_style"
             android:orientation="vertical" >
 
             <ImageView
@@ -105,9 +107,8 @@
         android:orientation="vertical" >
 
         <ImageView
-            android:id="@+id/logotest2"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_gravity="center"
             android:paddingBottom="30dp"
             android:src="@drawable/logo" />
@@ -180,6 +181,7 @@
             android:id="@+id/login_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            
             android:text="로그인" />
     </LinearLayout>
 

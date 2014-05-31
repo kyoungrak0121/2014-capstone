@@ -49,8 +49,7 @@ public class GeneralFragment extends SuperFragment implements OnClickListener {
 				// 텍스트가 변경될때마다 발생할 이벤트를 작성.
 				if (pushTitle.isFocusable()) {
 					// mXMLBuyCount EditText 가 포커스 되어있을 경우에만 실행됩니다.
-					
-					
+
 				}
 			}
 			

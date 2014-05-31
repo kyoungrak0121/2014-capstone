@@ -12,4 +12,15 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_cancle_class_fragment">CancleClassFragment</string>
     <string name="title_activity_calendar_adapter">CalendarAdapter</string>
+    
+    
+    <color name="deepblueBackground">#ff4a6aa7</color>
+    <color name="white">#ffffff</color>
+    <color name="black77">#77000000</color>
+    <color name="black44">#44000000</color>   
+    <color name="yellow">#ffffb400</color>
+    <color name="blackff">#ff000000</color>
+    <color name="button_select">#93bffa</color>
+    <color name="slide_background">#93bffa</color>
+    
 </resources>

@@ -3,6 +3,8 @@ package com.example.push.professor.fragment;
 import com.example.push.R;
 import com.example.push.widget.Calender;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,4 +56,5 @@ public class SupplementFragment extends Calender {
 			}
 		});
 	}
+
 }

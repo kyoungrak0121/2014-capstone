@@ -9,6 +9,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
@@ -20,21 +21,7 @@ import com.google.android.gcm.GCMBaseIntentService;
 
 public class GCMIntentService extends GCMBaseIntentService {
 	private static final String TAG = "GCM";
-//	private static final String INSERT_PAGE = "http://자신의 서버 아이피/insert_registration.php";
 	private static final String SENDER_ID = "41362468480";
-//	private GCMHttpConnect httpConnect = null;
-	
-	
-	/*
-	private GCMHttpConnect.Request httpRequest = new GCMHttpConnect.Request() {
-		
-	@Override
-	public void OnComplete() {
-			// TODO Auto-generated method stub
-			showToast();
-		}
-	};
-	*/
 	
 	public GCMIntentService() {
 		super(SENDER_ID);
@@ -58,16 +45,13 @@ public class GCMIntentService extends GCMBaseIntentService {
 	protected void onRegistered(Context context, String regID) {
 		// TODO Auto-generated method stub
 		
-
 		if(!regID.equals("") || regID != null){
 			
 			SharedPreferences prefs = getSharedPreferences("regId", Activity.MODE_PRIVATE); 
 			SharedPreferences.Editor editor = prefs.edit();
 			editor.putString("regId",regID);
 			editor.commit();
-			
-//			단일전송일때 주석처리
-//			insertRegistrationID(regID);
+			showToast();
 		}
 	}
 
@@ -91,25 +75,21 @@ public class GCMIntentService extends GCMBaseIntentService {
  		Log.w("show gcm message","ticker :" + ticker);
 		
 		NotificationManager notificationManager = (NotificationManager)context.getSystemService(Activity.NOTIFICATION_SERVICE);
+		Notification notification = new Notification(R.drawable.logo,ticker, System.currentTimeMillis());
+		//해당 어플을 실행하는 이벤트를 하고싶을 때 아래 주석을 풀어주세요
 		
-		Notification notification = new Notification(R.drawable.logo, ticker, System.currentTimeMillis());
-	    notification.flags |= Notification.FLAG_AUTO_CANCEL;
-	    
-	    //해당 어플을 실행하는 이벤트를 하고싶을 때 아래 주석을 풀어주세요
-		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, 
-				new Intent(context, SplashActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK), 0);
-		
-		PowerManager pm = (PowerManager) context
-				.getSystemService(Context.POWER_SERVICE);
-		WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK
-				| PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
-		wl.acquire(15000);
-		
+		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
+				new Intent(context, SplashActivity.class)
+						.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+								| Intent.FLAG_ACTIVITY_CLEAR_TOP
+								| Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
 
+		//진동
 		notification.vibrate = new long[] { 500, 100, 500, 100 };
-		notification.sound = Uri.parse("/system/media/audio/notifications/20_Cloud.ogg");
+		//기본 설정 사운드
+		notification.sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 		notification.flags = Notification.FLAG_AUTO_CANCEL;
-				
+		
 		notification.setLatestEventInfo(context,title, msg, pendingIntent);
 		notificationManager.notify(0, notification);
 	}

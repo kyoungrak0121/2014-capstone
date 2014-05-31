@@ -71,13 +71,13 @@ public class SuperFragment extends Fragment {
 	public void setPushMessage(String kicker, String title, String message) {
 
 		pushMsg = "";
-		pushMsg = "" + sub_name + "\n" + message;
+		pushMsg = "" + sub_name + kicker +"\n"+ title + "\n" + message;
 
 		gcmSender = new Sender(API_KEY);
 		gcmMessage = new Message.Builder().collapseKey(COLLAPSE_KEY)
 				.delayWhileIdle(DELAY_WHILE_IDLE).timeToLive(TIME_TO_LIVE)
-				.delayWhileIdle(false).addData("ticker", kicker)
-				.addData("title", title).addData("msg", pushMsg).build();
+				.delayWhileIdle(false).addData("ticker",sub_name + " " + kicker)
+				.addData("title", kicker).addData("msg", pushMsg).build();
 	}
 
 	public void setSMSMessage(String kicker, String title, String message) {
@@ -98,8 +98,8 @@ public class SuperFragment extends Fragment {
 
 		gcmMessage = new Message.Builder().collapseKey(COLLAPSE_KEY)
 				.delayWhileIdle(DELAY_WHILE_IDLE).timeToLive(TIME_TO_LIVE)
-				.delayWhileIdle(false).addData("ticker", kicker)
-				.addData("title", sub_name).addData("msg", pushMsg).build();
+				.delayWhileIdle(false).addData("ticker", sub_name +" "+ kicker)
+				.addData("title", kicker).addData("msg", pushMsg).build();
 	}
 
 	public void setSMSMessage(String kicker, String title, String content,
@@ -303,14 +303,18 @@ public class SuperFragment extends Fragment {
 						sendPushMessage();
 					}
 				}).start();
+				
+				if (isSMSSend()){
+					new Thread(new Runnable() {
+						@Override
+						public void run() {
+							Log.w("sms", "SendSMSmessage runrunrun");
+							// TODO Auto-generated method stub
 
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						sendSMSMessage();
-					}
-				}).start();
+							sendSMSMessage();
+						}
+					}).start();
+				}	
 			}
 		});
 		builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
@@ -324,7 +328,7 @@ public class SuperFragment extends Fragment {
 	}
 
 	protected void getSubjectListDialog(final String kicker, final String message, final Map<Integer, Map<Integer, String>> mSelectDayList) {
-
+		
 		List<String> list = getSubjectList();
 		final String[] items = list.toArray(new String[list.size()]);
 
@@ -358,15 +362,18 @@ public class SuperFragment extends Fragment {
 						sendPushMessage();
 					}
 				}).start();
+				
+				if (isSMSSend()){
+					new Thread(new Runnable() {
+						@Override
+						public void run() {
+							Log.w("sms", "SendSMSmessage runrunrun");
+							// TODO Auto-generated method stub
 
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						Log.w("sms", "SendSMSmessage runrunrun");
-						// TODO Auto-generated method stub
-						sendSMSMessage();
-					}
-				}).start();
+							sendSMSMessage();
+						}
+					}).start();
+				}	
 			}
 		});
 		builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
@@ -402,5 +409,18 @@ public class SuperFragment extends Fragment {
 		db = new DBManager(getActivity());
 		return db.setProfSubList(profNum);
 
+	}
+	
+	public boolean isSMSSend(){
+		
+		boolean isSMSCheck;
+		
+		SharedPreferences prefs = getActivity().getSharedPreferences("SMSCheck", Activity.MODE_PRIVATE);
+		isSMSCheck = prefs.getBoolean("SMSCheck", true);
+		
+		if(isSMSCheck){
+			return true; // 보내기 
+		}
+		return false; // false 면 안 보내기 
 	}
 }

@@ -1,0 +1,27 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/popup"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#191A19"
+    android:orientation="vertical"
+    tools:context=".HiddenActivity" >
+ <!-- 해당 액티비티 선언 -->
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text=" -Argues With Officials : 애매한 판정일 경우 심판과 언쟁을 함\n\n -Avoids Using Weaker Foot : 약한발은 잘 사용하지 않음\n\n -Cautious With Crosses : 코너킥 및 크로스에 대해 인터셉트 시도 보단 골 라인을 지키려 한다\n\n -Comes For Crosses : 코너킥 및 크로스에 대해 적극적으로 인터셉트를 시도한다\n\n -Corner Specialist : 코너킥 시 좀더 많은 골 찬스를 발생시킴 \n\n -Counter Attacker : 역습상황으로 전환할때의 반응속도가 향상됨\n\n -Diver : 태클을 당하면 넘어지면서 반칙을 유도함\n\n -Dives Into Tackles : 슬라이딩 태클을 자주 시도함\n\n -Early Crosser : 얼리크로스 능력치 뛰어남\n\n -Fancy Feet : 보다 정교하고 화려한 퍼스트 터치 발동\n\n -Finesse Header : 정확한 헤딩을 시도함\n\n -Finesse Shot : 정확한 슛팅을 시도함\n\n -Flair : 공을 받거나 받은 후에 일정한 공간과 시간이 있다면 자발적으로 트릭을 사용함\n\n -Forward pushes wide left : 공격시 왼쪽을 선호하는 움직임\n\n -Forward pushes wide Right : 공격시 오른쪽을 선호하는 움직임\n\n -Giant Thorw in : 드로잉을 아주 멀리 던짐 \n\n -GK Long Throw : 골킥을 멀리 찰 수 있음\n\n -GK One On One : 1:1상황에서의 방어능력이 뛰어남\n\n -GK Puncher : 펀칭의 능력이 뛰어나고 자주시도함\n\n -GK up for Corners : 키퍼가 경기종료시간이 얼마 안남았을때 코너킥 상황에 공격하러 올라감\n\n -Heel Passer : 힐패스능력이 뛰어남\n\n -High Determination : 지고있는 상황에서 일관성 상향\n\n -Holds Up : 공격상황에서 몸싸움 경합시 밸런스 상향..."
+            android:textColor="#B4B4B4"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:typeface="normal" />
+    </LinearLayout>
+
+</ScrollView>

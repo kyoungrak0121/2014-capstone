@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center"
+    android:layout_height="match_parent"
     android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="2" >
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/inputTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
+            android:layout_weight="1"
             android:text="Title 입력 -> "
             android:textColor="#5D5D5D"
             android:textSize="12sp"
@@ -25,7 +22,7 @@
             android:id="@+id/inputMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
+            android:layout_weight="1"
             android:text="Message 입력 -> "
             android:textColor="#5D5D5D"
             android:textSize="12sp"
@@ -34,7 +31,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
+            android:layout_weight="1"
             android:text="Send Message 선택"
             android:textColor="#5D5D5D"
             android:textSize="12sp"
@@ -43,12 +40,11 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginTop="15dp"
-        android:layout_weight="2"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="10dp" >
+        android:padding="13dp" >
 
         <TextView
             android:layout_width="match_parent"
@@ -72,11 +68,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="10dp" >
+        android:padding="13dp" >
 
         <TextView
             android:layout_width="match_parent"
@@ -99,11 +94,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="10dp" >
+        android:padding="13dp" >
 
         <TextView
             android:layout_width="wrap_content"
@@ -116,18 +110,15 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
-        android:padding="10dp"
-        android:weightSum="2" >
+        android:padding="10dp" >
 
         <Button
             android:id="@+id/pushTrans"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:onClick="onClickButton"
             android:text="Send Message"
             android:textSize="15sp" />

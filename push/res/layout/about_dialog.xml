@@ -1,0 +1,192 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/Community_signUp_scrollView00"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/deepblueBackground"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="15dp" >
+
+        <LinearLayout
+            android:id="@+id/Community_signUp_Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/button_style"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/yellow"
+                android:gravity="center"
+                android:text="Push"
+                android:textColor="@color/blackff"
+                android:textSize="25dp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/Community_signUp_Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_style"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/black44"
+                android:gravity="center"
+                android:text="개발자"
+                android:textColor="@color/white"
+                android:textSize="15dp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black77"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Push팀 박세진 정경락 서혜인"
+            android:textColor="@color/white"
+            android:textSize="15dp" />
+
+        <!-- 블럭 시작 -->
+
+        <LinearLayout
+            android:id="@+id/Community_signUp_Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/button_style"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/black44"
+                android:gravity="center"
+                android:text="Email"
+                android:textColor="@color/white"
+                android:textSize="15dp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black77"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="kyoungrak0121@gmail.com"
+            android:textColor="@color/white"
+            android:textSize="15dp" />
+
+        <!-- 블럭 끝 -->
+
+    
+        <!-- 블럭 시작 -->
+
+        <LinearLayout
+            android:id="@+id/Community_signUp_Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/button_style"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/black44"
+                android:gravity="center"
+                android:text="주의사항"
+                android:textColor="@color/white"
+                android:textSize="15dp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black77"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="본 어플의 시뮬레이션을 위한 어플로 테스트 후 실제 서비스를 시행 하겠습니다."
+            android:textColor="@color/white"
+            android:textSize="15dp" />
+
+        <!-- 블럭 끝 -->
+        
+        <!-- 블럭 시작 -->
+
+        <LinearLayout
+            android:id="@+id/Community_signUp_Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/button_style"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/black44"
+                android:gravity="center"
+                android:text="고장 및 버그, 건의사항 신고"
+                android:textColor="@color/white"
+                android:textSize="15dp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black77"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Push의 '버그, 요청 제보'는 email을 통헤 보내주세요."
+            android:textColor="@color/white"
+            android:textSize="15dp" />
+
+        <!-- 블럭 끝 -->
+        
+        <!-- 블럭 시작 -->
+
+        <LinearLayout
+            android:id="@+id/Community_signUp_Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/button_style"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/black44"
+                android:gravity="center"
+                android:text="알림"
+                android:textColor="@color/white"
+                android:textSize="15dp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black77"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="2014/1학기 캡스톤 프로젝트 1 장혁수 교수님 Push팀의 어플리케이션입니다."
+            android:textColor="@color/white"
+            android:textSize="15dp" />
+
+        <!-- 블럭 끝 -->
+
+    </LinearLayout>
+
+</ScrollView>

@@ -32,7 +32,9 @@ public class MainActivity extends SuperActivity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_main);
-	
+		
+		SuperActivity.context = this;	
+		
 		setSlideHolder();
 		
 		globals = Globals.getInstance();

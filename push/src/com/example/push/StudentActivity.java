@@ -18,13 +18,16 @@ public class StudentActivity extends SuperActivity{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_student);
+		
+		SuperActivity.context = this;	
+		
 		setSlideHolder();
 		setLoginText();
 			
 		Context mContext = getApplicationContext();//view가 alert 이면 팝업실행 즉 버튼을 누르면 팝업창이 뜨는 조건
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
 		
-        View layout = inflater.inflate(R.layout.dialog,(ViewGroup) findViewById(R.id.popup));
+        View layout = inflater.inflate(R.layout.st_notify_dialog,(ViewGroup) findViewById(R.id.popup));
         AlertDialog.Builder aDialog = new AlertDialog.Builder(StudentActivity.this);
     	
         aDialog.setTitle("공지사항 목록"); //타이틀바 제목

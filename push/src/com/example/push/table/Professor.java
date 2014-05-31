@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class Professor extends Person{
 	
-	private Map<String, Subject_Info> subjectList;
+	private Map<String, Subject_Info> subjectList = null;
 	
 	public Professor(String id, String pw , String name ){
 		super(id, pw,name);
